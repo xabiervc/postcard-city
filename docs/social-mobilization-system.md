@@ -67,7 +67,7 @@ The model records immediate disruption separately from long-term effects. It tra
 
 ## Rights constraints
 
-Peaceful protest is a legitimate civic activity. The simulation protects lawful assembly, expression, association, due process, equal treatment, and access to independent review. Restrictions must be proportionate, time-limited, legally grounded, and auditable. The model distinguishes public-safety planning from political retaliation and does not reward collective punishment.
+Peaceful protest is a legitimate civic activity. The simulation protects lawful assembly, expression, association, due process, equal treatment, and access to independent review. Restrictions must be proportionate, time-limited, legally grounded, and auditable. The model distinguishes public-safety planning from political retaliation and does not reward collective punishment or indiscriminate repression.
 
 ## Safety and ethics
 
