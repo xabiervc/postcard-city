@@ -30,6 +30,20 @@ class Simulation:
     def from_scenario_file(cls, path: str | Path = DEFAULT_SCENARIO_PATH, seed: int | None = None) -> "Simulation":
         return cls(load_scenario(path), seed)
 
+    def start_social_housing(self, units: int) -> None:
+        if units <= 0:
+            raise ValueError("units must be positive")
+        h = self.state.social_housing
+        if h.construction_progress > 0 or h.units > 0:
+            raise ValueError("social housing project already exists")
+        cost = units * self.housing_parameters["construction_cost_per_unit"]
+        if cost > self.state.budget:
+            raise ValueError("insufficient budget")
+        self.state.budget -= cost
+        h.units = units
+        h.construction_progress = 0.0
+        self._trace("social_housing_construction", "budget", -cost, "capital cost for a delayed public housing project")
+
     @staticmethod
     def _build_state(scenario: dict[str, Any], seed: int) -> RegionState:
         districts = {d["id"]: DistrictState(**{**d, "healthcare_staff": float(d["healthcare_staff"])}) for d in scenario["region"]["districts"]}
