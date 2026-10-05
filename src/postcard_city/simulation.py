@@ -212,6 +212,8 @@ class Simulation:
 
     def _resolve_events(self) -> None:
         for event in self.scenario["events"]:
+            if event["id"] in self.state.event_history:
+                continue
             when = event["when"]
             if when.get("project_status") and when["project_status"] != self.state.project_status:
                 continue
