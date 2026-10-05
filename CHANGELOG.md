@@ -11,4 +11,4 @@
 - Added full-slice integration and replay tests.
 
 ### Calibration boundary
-Housing and migration coefficients remain prototype calibration. They must be replaced or parameterized through mechanism-card resolution and robustness analysis before production.
+Housing and migration coefficients remain prototype calibration. They must be replaced or parameterized through mechanism-card resolution and robustness analysis before production balance.
