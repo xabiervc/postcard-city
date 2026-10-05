@@ -1,0 +1,26 @@
+{
+  "id": "the-overheated-destination",
+  "title": "The Overheated Destination",
+  "region": {
+    "template": "coastal-historic-metropolitan",
+    "districts": ["historic_core", "outer_district"],
+    "initial_conditions": {
+      "tourism": "high",
+      "housing": "pressured",
+      "transport": "strained",
+      "healthcare": "strained",
+      "economy": "dependent"
+    }
+  },
+  "decisions": [
+    {
+      "id": "aurora_leisure_proposal",
+      "options": [
+        {"id": "approve", "label_key": "decision.aurora.approve"},
+        {"id": "reject", "label_key": "decision.aurora.reject"},
+        {"id": "renegotiate", "label_key": "decision.aurora.renegotiate"},
+        {"id": "audit", "label_key": "decision.aurora.audit"}
+      ]
+    }
+  ]
+}
