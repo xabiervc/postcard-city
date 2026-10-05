@@ -18,3 +18,14 @@ def executive_report(state: RegionState) -> str:
         f"Political support: {state.political_support:.0%}",
         f"Events: {', '.join(state.event_history) or 'none'}",
     ])
+
+
+def causal_report(state: RegionState, limit: int | None = None) -> str:
+    traces = state.traces if limit is None else state.traces[-limit:]
+    lines = ["Causal trace:"]
+    lines.extend(
+        f"- Month {trace.month}: {trace.source} -> {trace.target} "
+        f"({trace.amount:+.4f}) because {trace.reason}"
+        for trace in traces
+    )
+    return "\n".join(lines)

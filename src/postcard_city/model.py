@@ -12,6 +12,26 @@ class Decision:
     option_id: str
 
 
+@dataclass(frozen=True)
+class TraceEntry:
+    """A player-readable explanation of a state transition."""
+
+    month: int
+    source: str
+    target: str
+    amount: float
+    reason: str
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "month": self.month,
+            "source": self.source,
+            "target": self.target,
+            "amount": round(self.amount, 6),
+            "reason": self.reason,
+        }
+
+
 @dataclass
 class DistrictState:
     id: str
@@ -42,6 +62,7 @@ class RegionState:
     decision_history: list[Decision] = field(default_factory=list)
     event_history: list[str] = field(default_factory=list)
     metrics: dict[str, float] = field(default_factory=dict)
+    traces: list[TraceEntry] = field(default_factory=list)
 
     def snapshot(self) -> dict[str, Any]:
         return {
@@ -72,4 +93,5 @@ class RegionState:
             "decision_history": [decision.__dict__ for decision in self.decision_history],
             "event_history": self.event_history[:],
             "metrics": {key: round(value, 4) for key, value in sorted(self.metrics.items())},
+            "traces": [trace.as_dict() for trace in self.traces],
         }

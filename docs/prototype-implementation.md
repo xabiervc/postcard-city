@@ -13,27 +13,28 @@ This prototype is the first executable proof of the Postcard City simulation con
 - Healthcare staffing pressure.
 - Transport reliability.
 - Budget updates.
-- Aurora Leisure decision options.
+- Aurora Leisure decision options with explicit scheduling.
+- Causal transition traces for player-readable debugging.
 - Delayed financing warning and housing protest events.
-- Executive reporting.
+- Executive and causal reporting.
 - Scenario content validation.
-- Reproducibility tests.
+- Reproducibility and trace tests.
 
 ## Run locally
 ```bash
-python -m pip install -e .[dev]
+python -m pip install -e ".[dev]"
 pytest
-python -m postcard_city.cli --months 12 --decision renegotiate
+python -m postcard_city.cli --months 12 --decision renegotiate --show-trace --trace-limit 20
 python tools/validate_content.py
 ```
 
 ## Deliberate limitations
-This is not production gameplay. It has no final engine, visual map, full political simulation, media simulation, procedural generation, persistence layer, or final balance. The purpose is to validate deterministic causal relationships before expanding the scope.
+This is not production gameplay. It has no final engine, visual map, full political simulation, media simulation, procedural generation, persistence layer, or final balance. The current slice data is still constructed in Python and will be moved behind content loading in the next iteration.
 
 ## Next technical steps
-1. Add explicit state transition traces.
+1. Load initial state and decision definitions from validated scenario content.
 2. Add save/load serialization and migration identifiers.
-3. Replace hard-coded slice data with schema-backed content loading.
-4. Add election and media event contracts.
-5. Add property-based invariants and scenario solvability checks.
-6. Build a thin interactive presentation layer.
+3. Add election and media event contracts.
+4. Add property-based invariants and scenario solvability checks.
+5. Build a thin interactive presentation layer.
+6. Profile simulation and UI response under the slice's maximum state.
