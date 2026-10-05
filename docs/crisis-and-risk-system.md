@@ -51,7 +51,7 @@ Before an event, signals are proportional to preparedness and information qualit
 - No event produces arbitrary instant death as a difficulty mechanic.
 - Biological hazards remain abstract and high-level.
 - Terrorism and war are governance scenarios, not tactical combat simulations.
-- Content filtering and event-family opt-outs are supported.
+- The system supports content filtering and event-family opt-outs.
 - A crisis never targets protected groups through hidden deterministic bias.
 - Accessibility mode may pause, simplify, or defer crisis decisions without penalizing the player.
 
