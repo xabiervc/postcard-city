@@ -4,17 +4,15 @@
 
 ## Status
 
-**Preimplementation / deterministic simulation prototype**
+**Deterministic simulation prototype with a documented vertical-slice design**
 
-The repository contains the first executable proof of the simulation contract. It is not yet a complete game or final production architecture.
+The repository contains an executable, tested simulation prototype and the design contracts for a future playable vertical slice. The simulation, CLI, reporting, robustness, sensitivity checks, and automated contracts are implemented. The project is **not yet a complete game**: visual presentation, playable characters, postcard comparison, campaign flow, and structured playtesting remain prototype work.
 
 ## Game overview
 
 Postcard City is a political regional city simulator about tourism, housing, employment, public services, economic diversification, power, media, and livability.
 
-Every run begins with a different region: a coastal historic city, an inland provincial capital, a shrinking industrial area, a commuter belt, a newly planned city, a university town, a port, or another coherent urban case. Each region has its own history, initial condition, political landscape, opportunities, crises, and hidden liabilities.
-
-The player governs as an elected regional or metropolitan leader. They must balance private investment, tourism, housing, worker accessibility, healthcare, transport, employment, institutional trust, public finances, political support, media pressure, and opposition.
+The player is not an omnipotent mayor. The intended fantasy is to steer a living region under pressure, negotiate incompatible interests, accept uncertainty, and decide what kind of city deserves to be remembered.
 
 The central question is not whether tourism is good or bad. It is whether a region can become a successful destination without becoming impossible to live in.
 
@@ -29,73 +27,29 @@ Postcard City is not a conventional empty-grid city builder and not a literal th
 - Construction is a policy instrument, not the entire game.
 - Tourism is a transforming force, not just an income source.
 - Housing, jobs, services, and transport are connected.
-- Economic opportunities can be beneficial, predatory, speculative, fraudulent, or simply misjudged.
-- Elections, opposition, journalists, media funding, leaks, and scandals make information and legitimacy part of the simulation.
+- Economic opportunities can be beneficial, predatory, speculative, fraudulent, or misjudged.
+- Information, legitimacy, evidence, and delayed consequences matter.
 - Procedural variation creates coherent regional cases rather than random maps without context.
-- Complexity can be reduced or expanded without removing the core fantasy.
+- Complexity should be scalable without removing the core fantasy.
+- Postcards are intended to become playable memories of places, not decorative screenshots.
 
-## Core gameplay loop
+## Intended gameplay loop
 
-1. Inspect the region and understand its visible and hidden pressures.
-2. Consult residents, workers, institutions, companies, media, and opposition.
-3. Evaluate opportunities, proposals, warnings, and incomplete information.
-4. Choose a policy, investment, regulation, communication strategy, or compromise.
-5. Advance time and let delayed effects emerge.
-6. Observe changes in neighbourhoods, services, employment, housing, transport, trust, and politics.
-7. Respond to protests, investigations, scandals, crises, elections, and new opportunities.
-8. Review the mandate and decide what kind of region you are creating.
+```text
+observe -> interpret -> prioritize -> intervene -> resolve -> remember
+```
 
-## Major systems planned
+The planned player-facing cycle is:
 
-### Tourism and the postcard effect
+1. Inspect districts, indicators, testimonies, and previous postcards.
+2. Interpret competing causes, evidence, and uncertainty.
+3. Prioritize one problem or value under resource and political constraints.
+4. Intervene through a policy, decision, land action, housing action, or negotiation.
+5. Advance time and resolve delayed effects or crises.
+6. Review metrics, traces, affected perspectives, and changed places.
+7. Create or compare a postcard that records what improved, what was displaced, and what remains unresolved.
 
-Tourism brings visitors, jobs, tax revenue, investment, and cultural attention. It can also increase housing pressure, congestion, seasonal employment, service demand, and the conversion of homes and local businesses into visitor infrastructure.
-
-The region can visually evolve from a living city to a mixed destination, a branded tourist district, or a polished but hollow postcard.
-
-### Housing and displacement
-
-Housing is divided between residential use, short-term rentals, worker accommodation, vacant units, and other uses. The player must decide whether to protect residential capacity, allow conversion, subsidise housing, regulate rents, build outward, or accept displacement.
-
-### Work, services, and distance
-
-A building does not automatically make a service functional. Hospitals, schools, transport, emergency services, and businesses require people who can afford to live within a workable distance.
-
-The same policy that raises property values can make it harder to recruit nurses, teachers, cleaners, drivers, technicians, and other essential workers.
-
-### Economic diversification
-
-Industry, universities, technology, logistics, energy, culture, healthcare, and other sectors appear as context-sensitive opportunities. A healthy, connected, affordable region can attract better investments. A degraded region may attract only extractive, speculative, low-quality, or heavily subsidised projects.
-
-### Politics and elections
-
-The player governs through mandates and must maintain enough support to remain effective. Citizens, businesses, institutions, unions, media, and opposition parties care about different outcomes. Political identity emerges from the player’s pattern of decisions rather than a simple good-versus-evil selection.
-
-### Media, journalists, and scandals
-
-News organizations have resources, audiences, ownership, credibility, and editorial independence. A hidden fact may become a lead, then an investigation, then a verified story, then a political crisis. Public subsidies can strengthen local journalism and pluralism, or become a tool of dependence and capture.
-
-### Projects and promises
-
-Major projects arrive with public claims, private interests, infrastructure demands, legal requests, labour needs, uncertainty, and possible hidden liabilities. The player must distinguish private profit from public value and promised jobs from delivered jobs.
-
-### Procedural regional cases
-
-A region is generated through compatible templates, parameters, arcs, actors, opportunities, and crises. Replayability comes primarily from different causal situations and decision pressure, not only from cosmetic map variation.
-
-## Game modes planned
-
-- **Campaign:** authored scenarios introduce the systems progressively.
-- **Scenario:** a complete regional problem with a defined evaluation horizon.
-- **Sandbox:** indefinite governance with periodic reports and configurable crises.
-- **Custom:** per-system complexity, information, crisis, and political settings.
-
-## Complexity modes planned
-
-- **Casual:** executive summaries, aggregated systems, clear recommendations, limited crisis pressure.
-- **Standard:** housing, tourism, employment, services, transport, budget, basic politics, media, and opposition.
-- **Advanced:** uncertainty, contracts, corruption, deeper factions, information asymmetry, and investigative chains.
-- **Custom:** individual system resolution and rule configuration.
+The current CLI exposes the simulation and causal trace portions of this loop. The complete player-facing loop requires the vertical-slice prototype.
 
 ## Current vertical slice
 
@@ -103,54 +57,74 @@ A region is generated through compatible templates, parameters, arcs, actors, op
 
 A coastal historic metropolitan region has a profitable tourist centre, rising housing pressure, a car-dependent outer district, and an understaffed public hospital.
 
-Aurora Leisure proposes a large hotel and entertainment district. The proposal promises visitors, jobs, tax income, and transport investment. Its hidden risks concern financing, worker quality, public infrastructure costs, legal exceptions, housing pressure, and long-term dependence.
+Aurora Leisure proposes a large hotel and entertainment district. The proposal promises visitors, jobs, tax income, and transport investment. Its risks concern financing, worker quality, public infrastructure costs, legal exceptions, housing pressure, and long-term dependence.
 
-The current prototype supports four initial approaches:
+The current simulation supports four approaches:
 
-- Approve the proposal.
-- Reject it.
-- Renegotiate it with safeguards.
-- Delay it for an audit.
+- approve;
+- reject;
+- renegotiate;
+- audit.
 
-The intended outcomes include a tourist boom with service stress, a slower but safer compromise, a rejected project with alternative development, and a political or institutional crisis.
+The simulation also supports monthly decisions, public land actions, social-housing construction, events, metrics, and causal traces. The future playable slice is designed to add four recurring perspectives, one crisis, two interventions, delayed consequences, and two comparable postcards.
 
-## Prototype
+## Implemented prototype
 
-The current prototype is deliberately engine-agnostic and focuses on causal simulation before final presentation.
+Implemented and covered by automated tests:
 
-Implemented:
+- deterministic monthly simulation with explicit seeds;
+- aggregate districts and scenario validation;
+- tourism growth, revenue, housing conversion, rent pressure, migration, healthcare staffing, and transport reliability;
+- budget updates and public-housing construction/operations;
+- public-land sale and ground-lease decisions;
+- scheduled decisions and event resolution;
+- causal traces and executive reporting;
+- mechanism cards and robustness sweeps;
+- sensitivity checks for staffing and migration;
+- reproducibility, integration, invariant, boundary, robustness, and CLI tests.
 
-- Deterministic monthly ticks.
-- Seeded initial state.
-- Aggregate districts.
-- Tourism growth and tax revenue.
-- Residential-to-short-term-rental conversion.
-- Rent pressure.
-- Worker accessibility proxy.
-- Healthcare staffing pressure.
-- Transport reliability.
-- Budget updates.
-- Aurora Leisure decision options.
-- Delayed warnings and housing protests.
-- Executive and causal reporting.
-- Scenario content validation.
-- Automated reproducibility tests.
+Not yet implemented as a player-facing game:
 
-Run locally:
+- visual district presentation;
+- playable recurring characters and relationship UI;
+- crisis UI and campaign progression;
+- postcard creation and comparison records;
+- success/failure presentation;
+- full accessibility implementation;
+- structured playtests and calibration evidence.
+
+## Running locally
 
 ```bash
 python -m pip install -e ".[dev]"
-pytest
+python -m pytest
 python -m postcard_city.cli --months 12 --decision renegotiate
+python -m postcard_city.cli --months 6 --decision renegotiate --decision-month 2 --show-trace --trace-limit 5
 python tools/validate_content.py
 ```
 
-The CLI also supports an explicit decision month and transition trace output in the current prototype.
+Additional CLI options include `--start-social-housing`, `--land-parcel`, `--land-mode`, `--seed`, `--show-trace`, and `--trace-limit`.
+
+For a valid parcel ID, use a parcel whose scenario data has `public_control: true` and `tenure: "available"`.
+
+## Design closure documents
+
+- [Player fantasy and gameplay loop](docs/player-fantasy-and-gameplay-loop.md)
+- [Postcard memory system](docs/postcard-memory-system.md)
+- [Character bible](docs/character-bible.md)
+- [Relationship system](docs/relationship-system.md)
+- [Campaign structure](docs/campaign-structure.md)
+- [Complexity budget](docs/complexity-budget.md)
+- [Simulation calibration plan](docs/simulation-calibration-plan.md)
+- [Information accessibility specification](docs/information-accessibility-spec.md)
+- [Vertical-slice acceptance matrix](docs/vertical-slice-acceptance-matrix.md)
+
+These documents intentionally distinguish design-ready requirements from features that require an interactive build or playtests.
 
 ## Repository structure
 
 - `src/postcard_city/`: deterministic domain and simulation prototype.
-- `data/`: authored scenario content.
+- `data/`: authored scenario and mechanism content.
 - `docs/`: product, design, simulation, technical, accessibility, and quality documentation.
 - `schemas/`: machine-readable content contracts.
 - `config/`: design and vertical-slice configuration.
@@ -173,28 +147,28 @@ The CLI also supports an explicit decision month and transition trace output in 
 
 ## Quality target
 
-The project aims for an award-level standard comparable with the design, narrative, accessibility, presentation, and technical polish expected by The Game Awards, the D.I.C.E. Awards, the BAFTA Games Awards, and the Game Developers Choice Awards.
+The project aims for an award-level standard comparable with the design, narrative, accessibility, presentation, and technical polish expected by major game awards. This is an aspiration and a set of gates, not a claim that the current prototype has reached that standard.
 
-That ambition is treated as a set of gates, not a slogan:
+Current quality gates include:
 
-- Decisions must be understandable but not trivial.
-- Multiple strategies must remain viable.
-- Outcomes must be visible, traceable, and emotionally meaningful.
-- Procedural scenarios must be coherent and recoverable.
-- The interface must support both overview and deep inspection.
-- Accessibility must be designed in, not patched in.
-- Saves, seeds, content, and simulation results must be reliable and testable.
+- understandable but non-trivial decisions;
+- multiple viable strategies;
+- visible and traceable outcomes;
+- coherent procedural scenarios;
+- overview and deep-inspection support;
+- accessibility designed in rather than patched in;
+- reliable seeds, content, saves, and simulation results.
 
 ## Roadmap
 
 ### Phase 0 — Preimplementation
-Product definition, simulation boundaries, schemas, vertical slice, technical risks, accessibility, localization, and quality gates.
+Product definition, simulation boundaries, schemas, vertical-slice design, technical risks, accessibility, localization, and quality gates.
 
 ### Phase 1 — Simulation prototype
-Deterministic monthly simulation, causal traces, state inspection, serialization, and invariant tests.
+Deterministic monthly simulation, causal traces, state inspection, reporting, robustness, sensitivity, serialization, and invariant tests.
 
 ### Phase 2 — Vertical slice
-A small visual region, executive and detailed UI, media and opposition reaction, one election, complete evaluation, and accessibility baseline.
+A small visual region, executive and detailed UI, four recurring perspectives, postcard comparison, one crisis, complete evaluation, and accessibility baseline.
 
 ### Phase 3 — Systems expansion
 Procedural scenario generation, industry opportunities, more crises, deeper political actors, scalable complexity, and authoring tools.
