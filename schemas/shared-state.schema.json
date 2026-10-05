@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://postcard-city.invalid/schemas/shared-state.schema.json",
+  "title": "Postcard City Shared State",
+  "description": "Versioned state registry shared by all simulation subsystems.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "turn", "seed", "state", "trace"],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "turn": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "seed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "public_budget",
+        "public_debt",
+        "fiscal_capacity",
+        "administrative_capacity",
+        "essential_service_availability",
+        "institutional_legitimacy",
+        "public_trust",
+        "population",
+        "displacement",
+        "inequality",
+        "infrastructure_condition"
+      ],
+      "properties": {
+        "public_budget": {"type": "number", "minimum": 0},
+        "public_debt": {"type": "number", "minimum": 0},
+        "fiscal_capacity": {"type": "number", "minimum": 0},
+        "administrative_capacity": {"type": "number", "minimum": 0},
+        "essential_service_availability": {"type": "number", "minimum": 0, "maximum": 100},
+        "institutional_legitimacy": {"type": "number", "minimum": 0, "maximum": 100},
+        "public_trust": {"type": "number", "minimum": 0, "maximum": 100},
+        "population": {"type": "integer", "minimum": 0},
+        "displacement": {"type": "integer", "minimum": 0},
+        "inequality": {"type": "number", "minimum": 0, "maximum": 1},
+        "infrastructure_condition": {"type": "number", "minimum": 0, "maximum": 100}
+      }
+    },
+    "uncertainty": {
+      "type": "object",
+      "additionalProperties": {"type": "number", "minimum": 0, "maximum": 1}
+    },
+    "trace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["trace_id", "mechanisms", "output_delta"],
+      "properties": {
+        "trace_id": {"type": "string", "minLength": 1},
+        "mechanisms": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "output_delta": {"type": "object"}
+      }
+    }
+  }
+}
