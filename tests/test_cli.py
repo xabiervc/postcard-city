@@ -1,15 +1,23 @@
+import json
 import os
 import subprocess
 import sys
 from pathlib import Path
 
 SRC = str(Path(__file__).parents[1] / "src")
+ROOT = Path(__file__).parents[1]
+SCENARIO_PATH = ROOT / "data" / "scenarios" / "the-overheated-destination.json"
 
 
 def run_cli(*args):
     env = {**os.environ, "PYTHONPATH": SRC + os.pathsep + os.environ.get("PYTHONPATH", "")}
     return subprocess.run([sys.executable, "-m", "postcard_city.cli", *args],
                           capture_output=True, text=True, env=env)
+
+
+def available_parcel_id():
+    scenario = json.loads(SCENARIO_PATH.read_text(encoding="utf-8"))
+    return next(parcel["id"] for parcel in scenario["parcels"] if parcel["public_control"] and parcel["tenure"] == "available")
 
 
 def test_cli_runs_and_prints_report():
@@ -30,7 +38,7 @@ def test_cli_integrates_decision_housing_land_and_reporting():
         "--decision", "renegotiate",
         "--decision-month", "2",
         "--start-social-housing", "10",
-        "--land-parcel", "civic-edge",
+        "--land-parcel", available_parcel_id(),
         "--land-mode", "lease_ground",
     )
     assert result.returncode == 0, result.stderr
