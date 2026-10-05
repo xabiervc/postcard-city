@@ -1,13 +1,11 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource path="res://scripts/gameplay.gd" type="Script" id="1"]
-[ext_resource path="res://scenes/ui/metric_card.tscn" type="PackedScene" id="2"]
 [ext_resource path="res://scenes/ui/event_log.tscn" type="PackedScene" id="3"]
 [ext_resource path="res://scenes/ui/timeline_control.tscn" type="PackedScene" id="4"]
 [ext_resource path="res://scenes/postcard/postcard_compare.tscn" type="PackedScene" id="5"]
 [ext_resource path="res://scenes/ui/testimony_panel.tscn" type="PackedScene" id="6"]
 [ext_resource path="res://scenes/ui/crisis_panel.tscn" type="PackedScene" id="7"]
-[ext_resource path="res://scripts/postcard_compare.gd" type="Script" id="8"]
 
 [node name="Gameplay" type="Control"]
 layout_mode = 3
