@@ -1,11 +1,25 @@
 import json
 from pathlib import Path
 
+from postcard_city.scenario import Scenario
 from postcard_city.simulation import Simulation
 
 
+def replay_scenario():
+    return Scenario(
+        name="replay-fixture",
+        population=1000,
+        housing_units=500,
+        jobs=600,
+        budget=100.0,
+        healthcare_capacity=100.0,
+        education_capacity=100.0,
+        transport_capacity=100.0,
+    )
+
+
 def run_replay(seed):
-    simulation = Simulation(seed=seed)
+    simulation = Simulation(replay_scenario(), seed=seed)
     outputs = []
     for _ in range(3):
         result = simulation.step()
