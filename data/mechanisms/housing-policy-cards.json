@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "cards": [
+    {
+      "id": "str-regulation",
+      "version": 1,
+      "intervention": {"name": "Regulate short-term rentals", "parameters": {"cap_days": [30, 180], "enforcement_capacity": [0, 1]}, "delay_months": 6, "reversible": true},
+      "evidence_ids": ["barcelona-str-2020", "madrid-str-2026", "nsw-str-cap-2025"],
+      "configurations": [
+        {"id": "credible-enforcement", "context": [{"variable": "enforcement_capacity", "relation": "high"}, {"variable": "tourism_pressure", "relation": "high"}], "mechanism": {"actors": "property owners and platforms", "reasoning": "credible penalties reduce the expected return from visitor-only use and can return units to long-term housing", "acts_on": "short_term_rental_units"}, "outcomes": [{"target": "long_term_rent", "low": -0.019, "central": -0.019, "high": 0.0, "unit": "relative", "lag_months": 12, "evidence_ids": ["barcelona-str-2020"], "assumed": false}], "social_ledger": [{"target": "tourism_revenue", "direction": "negative_or_mixed", "assumed": true}], "certainty": "low"},
+        {"id": "weak-enforcement", "context": [{"variable": "enforcement_capacity", "relation": "low"}], "mechanism": {"actors": "property owners and platforms", "reasoning": "without credible enforcement, a nominal cap does not materially change owner behaviour", "acts_on": "short_term_rental_units"}, "outcomes": [{"target": "long_term_rent", "low": -0.005, "central": 0.0, "high": 0.005, "unit": "relative", "lag_months": 12, "evidence_ids": ["nsw-str-cap-2025"], "assumed": false}], "certainty": "low"}
+      ],
+      "expected_behaviours": [{"id": "weak-enforcement-no-sustained-rent-effect", "assertion": "weak enforcement does not guarantee a sustained rent reduction", "evidence_ids": ["nsw-str-cap-2025"]}]
+    },
+    {
+      "id": "social-housing",
+      "version": 1,
+      "intervention": {"name": "Build and operate social housing", "parameters": {"units": [100, 10000], "rent_share_of_market": [0.2, 0.7], "arrears_support": [0, 1]}, "delay_months": 24, "reversible": false},
+      "evidence_ids": ["social-arrears-review-2022"],
+      "configurations": [{"id": "managed-and-supported", "context": [{"variable": "arrears_support", "relation": "high"}, {"variable": "construction_capacity", "relation": "high"}], "mechanism": {"actors": "eligible households and public housing operator", "reasoning": "below-market homes reduce housing cost exposure, while support and maintenance determine whether the stock remains financially and socially sustainable", "acts_on": "housing_affordability_and_public_budget"}, "outcomes": [{"target": "public_budget", "low": -1.0, "central": -1.0, "high": 1.0, "unit": "policy-specific_net_present_value", "lag_months": 36, "evidence_ids": ["social-arrears-review-2022"], "assumed": true}], "fiscal_ledger": [{"target": "rent_income", "direction": "positive", "assumed": true}, {"target": "construction_and_maintenance", "direction": "negative", "assumed": true}, {"target": "arrears", "direction": "context_dependent", "evidence_ids": ["social-arrears-review-2022"]}], "certainty": "low"}],
+      "expected_behaviours": [{"id": "social-housing-is-not-automatically-profitable", "assertion": "social housing can improve affordability while producing a neutral or negative short-run public cash flow", "evidence_ids": ["social-arrears-review-2022"]}]
+    },
+    {
+      "id": "public-land-disposal",
+      "version": 1,
+      "intervention": {"name": "Dispose of public parcels", "parameters": {"mode": ["sale_freehold", "sale_restricted", "lease_ground"], "affordable_share": [0, 1], "lease_term_years": [10, 99]}, "delay_months": 18, "reversible": false},
+      "evidence_ids": ["public-land-practice-2026", "dutch-land-policy-2022"],
+      "configurations": [
+        {"id": "sell-freehold", "context": [{"variable": "fiscal_stress", "relation": "high"}], "mechanism": {"actors": "municipality and developers", "reasoning": "the municipality receives capital immediately but loses future control and land-value upside", "acts_on": "public_budget_and_land_control"}, "outcomes": [{"target": "public_budget", "low": 0.5, "central": 1.0, "high": 2.0, "unit": "land_sale_multiple", "lag_months": 0, "assumed": true}], "certainty": "very_low"},
+        {"id": "lease-ground", "context": [{"variable": "administrative_capacity", "relation": "high"}], "mechanism": {"actors": "municipality and developers", "reasoning": "the municipality retains ownership and can enforce conditions, but must manage the lease and wait for revenue", "acts_on": "public_budget_and_land_control"}, "outcomes": [{"target": "public_budget", "low": 0.01, "central": 0.03, "high": 0.06, "unit": "annual_land_value_share", "lag_months": 12, "assumed": true}], "certainty": "very_low"}
+      ],
+      "expected_behaviours": [{"id": "sale-is-irreversible", "assertion": "freehold sale removes the parcel from the public land inventory", "evidence_ids": ["public-land-practice-2026"]}, {"id": "lease-retains-control", "assertion": "ground lease preserves public ownership but creates administrative obligations", "evidence_ids": ["public-land-practice-2026", "dutch-land-policy-2022"]}]
+    },
+    {
+      "id": "public-housing-disposal",
+      "version": 1,
+      "intervention": {"name": "Sell public housing stock", "parameters": {"share": [0.01, 1.0], "discount": [0, 0.7], "tenant_protection": [0, 1]}, "delay_months": 6, "reversible": false},
+      "evidence_ids": ["right-to-buy-2022", "madrid-public-housing-sale-2016"],
+      "configurations": [{"id": "discounted-sale-without-replacement", "context": [{"variable": "replacement_rate", "relation": "low"}, {"variable": "fiscal_stress", "relation": "high"}], "mechanism": {"actors": "public landlord, tenants, and private buyers", "reasoning": "sale creates immediate receipts but reduces the permanently controlled stock; discounts and weak safeguards shift value away from the public balance sheet", "acts_on": "public_housing_stock_and_tenant_security"}, "outcomes": [{"target": "public_budget", "low": 0.0, "central": 1.0, "high": 2.0, "unit": "annual_housing_budget_multiple", "lag_months": 0, "assumed": true}], "fiscal_ledger": [{"target": "future_rent_income", "direction": "negative", "assumed": true}, {"target": "future_housing_obligation", "direction": "positive", "assumed": true}], "certainty": "low"}],
+      "expected_behaviours": [{"id": "sales-reduce-public-stock", "assertion": "selling without replacement reduces the permanently controlled public stock", "evidence_ids": ["right-to-buy-2022"]}]
+    },
+    {
+      "id": "rent-regulation",
+      "version": 1,
+      "intervention": {"name": "Regulate rent increases", "parameters": {"coverage": [0.1, 1.0], "enforcement_capacity": [0, 1], "exemptions": [0, 1]}, "delay_months": 6, "reversible": true},
+      "evidence_ids": ["catalonia-rent-control-cepr-2025", "catalonia-rent-control-2023"],
+      "configurations": [{"id": "disputed-market-response", "context": [{"variable": "market_tightness", "relation": "high"}, {"variable": "enforcement_capacity", "relation": "medium_or_high"}], "mechanism": {"actors": "tenants and landlords", "reasoning": "the rule protects covered tenants from price increases, while landlords may change supply, unit type, or investment depending on legal exposure", "acts_on": "covered_rents_and_rental_supply"}, "outcomes":[{"target":"covered_rent","low":-0.06,"central":-0.04,"high":0.0,"unit":"relative","lag_months":12,"evidence_ids":["catalonia-rent-control-cepr-2025","catalonia-rent-control-2023"]},{"target":"rental_supply","low":-0.32,"central":-0.15,"high":0.0,"unit":"relative","lag_months":12,"evidence_ids":["catalonia-rent-control-2023"],"alternative_evidence_ids":["catalonia-rent-control-cepr-2025"]}],"certainty":"disputed"}],
+      "expected_behaviours":[{"id":"rent-regulation-tradeoff-is-disputed","assertion":"rent regulation can lower covered rents while the supply effect remains uncertain and context-dependent","evidence_ids":["catalonia-rent-control-cepr-2025","catalonia-rent-control-2023"]}]
+    },
+    {
+      "id": "upzoning",
+      "version": 1,
+      "intervention": {"name": "Relax density or land-use restrictions", "parameters": {"density_bonus": [0.1, 2.0], "infrastructure_capacity": [0, 1], "affordable_share": [0, 1]}, "delay_months": 36, "reversible": true},
+      "evidence_ids": ["auckland-zoning-2026", "zurich-upzoning-2022"],
+      "configurations":[{"id":"feasible-buildout","context":[{"variable":"developer_feasibility","relation":"high"},{"variable":"infrastructure_capacity","relation":"high"}],"mechanism":{"actors":"developers and households","reasoning":"more permitted capacity becomes actual homes only when construction is financially and physically feasible","acts_on":"housing_supply"},"outcomes":[{"target":"housing_supply","low":0.05,"central":0.15,"high":0.30,"unit":"relative","lag_months":36,"evidence_ids":["auckland-zoning-2026","zurich-upzoning-2022"]},{"target":"rent","low":-0.23,"central":-0.05,"high":0.0,"unit":"relative","lag_months":96,"evidence_ids":["auckland-zoning-2026"],"alternative_evidence_ids":["zurich-upzoning-2022"]}],"certainty":"low"}],
+      "expected_behaviours":[{"id":"permission-is-not-construction","assertion":"relaxing zoning does not guarantee that permitted capacity becomes completed housing","evidence_ids":["zurich-upzoning-2022"]}]
+    },
+    {
+      "id": "expropriation",
+      "version": 1,
+      "intervention": {"name": "Acquire or expropriate large private housing portfolios", "parameters": {"portfolio_share": [0.1, 1.0], "compensation_share": [0.5, 1.5], "management_capacity": [0, 1]}, "delay_months": 24, "reversible": false},
+      "evidence_ids": ["berlin-expropriation-2026", "berlin-regulatory-risk-2026"],
+      "configurations":[{"id":"high-cost-acquisition","context":[{"variable":"legal_capacity","relation":"high"},{"variable":"fiscal_capacity","relation":"high"}],"mechanism":{"actors":"public authority, landlords, tenants, and investors","reasoning":"public acquisition changes ownership and potentially rent-setting, but compensation, legal delay, management, and investment response determine the net result","acts_on":"public_housing_stock_and_public_debt"},"outcomes":[{"target":"public_debt","low":0.10,"central":0.50,"high":1.00,"unit":"relative_to_annual_budget","lag_months":24,"evidence_ids":["berlin-expropriation-2026"],"assumed":true},{"target":"new_housing_supply","low":0.0,"central":0.0,"high":0.05,"unit":"relative","lag_months":60,"evidence_ids":["berlin-expropriation-2026"]},{"target":"investment_confidence","low":-0.20,"central":-0.05,"high":0.0,"unit":"relative","lag_months":24,"evidence_ids":["berlin-regulatory-risk-2026"],"assumed":true}],"certainty":"very_low"}],
+      "expected_behaviours":[{"id":"ownership-transfer-is-not-new-construction","assertion":"acquisition transfers or controls existing stock and does not automatically create new homes","evidence_ids":["berlin-expropriation-2026"]}]
+    }
+  ]
+}

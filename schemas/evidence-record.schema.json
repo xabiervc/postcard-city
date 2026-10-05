@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "postcard-city/evidence-record.schema.json",
+  "title": "Postcard City Evidence Record",
+  "type": "object",
+  "required": ["id", "title", "kind", "source", "context", "limitations"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+    "title": {"type": "string", "minLength": 1},
+    "kind": {"type": "string", "enum": ["empirical", "review", "administrative", "projection", "expert", "design_calibration"]},
+    "source": {
+      "type": "object",
+      "required": ["url", "publisher_or_journal", "access_date"],
+      "properties": {
+        "url": {"type": "string", "format": "uri"},
+        "publisher_or_journal": {"type": "string"},
+        "access_date": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "context": {"type": "object"},
+    "design": {"type": "string"},
+    "finding": {"type": "string"},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "certainty": {"type": "string", "enum": ["high", "moderate", "low", "very_low", "disputed", "assumed"]}
+  },
+  "additionalProperties": false
+}

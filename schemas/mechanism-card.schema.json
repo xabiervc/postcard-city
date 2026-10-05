@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "postcard-city/mechanism-card.schema.json",
+  "title": "Postcard City Mechanism Card",
+  "type": "object",
+  "required": ["id", "version", "intervention", "configurations", "evidence_ids", "expected_behaviours"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+    "version": {"type": "integer", "minimum": 1},
+    "intervention": {
+      "type": "object",
+      "required": ["name", "parameters", "delay_months", "reversible"],
+      "properties": {
+        "name": {"type": "string"},
+        "parameters": {"type": "object"},
+        "delay_months": {"type": "integer", "minimum": 0},
+        "reversible": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "configurations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "context", "mechanism", "outcomes", "certainty"],
+        "properties": {
+          "id": {"type": "string"},
+          "context": {"type": "array", "items": {"type": "object"}},
+          "mechanism": {
+            "type": "object",
+            "required": ["actors", "reasoning", "acts_on"],
+            "properties": {"actors": {"type": "string"}, "reasoning": {"type": "string"}, "acts_on": {"type": "string"}},
+            "additionalProperties": false
+          },
+          "outcomes": {"type": "array", "items": {"type": "object"}},
+          "fiscal_ledger": {"type": "array", "items": {"type": "object"}},
+          "social_ledger": {"type": "array", "items": {"type": "object"}},
+          "certainty": {"type": "string", "enum": ["high", "moderate", "low", "very_low", "disputed", "assumed"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "evidence_ids": {"type": "array", "items": {"type": "string"}},
+    "expected_behaviours": {"type": "array", "items": {"type": "object"}}
+  },
+  "additionalProperties": false
+}
