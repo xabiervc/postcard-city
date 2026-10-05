@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource path="res://scripts/city_builder.gd" type="Script" id="1"]
 [ext_resource path="res://scripts/isometric_city_view.gd" type="Script" id="2"]
 [ext_resource path="res://scenes/ui/event_log.tscn" type="PackedScene" id="3"]
 [ext_resource path="res://scenes/ui/timeline_control.tscn" type="PackedScene" id="4"]
-[ext_resource path="res://scenes/ui/crisis_panel.tscn" type="PackedScene" id="5"]
 
 [node name="CityBuilder" type="Control"]
 layout_mode = 3
@@ -21,32 +20,49 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color("0b1117")
+mouse_filter = 2
 
-[node name="MainLayout" type="HBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 24.0
-offset_top = 20.0
-offset_right = -24.0
-offset_bottom = -20.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 18
+[node name="TopBar" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1440.0
+offset_bottom = 66.0
+color = Color("131e26")
 
-[node name="LeftColumn" type="VBoxContainer" parent="MainLayout"]
-custom_minimum_size = Vector2(250, 0)
-layout_mode = 2
-
-[node name="Title" type="Label" parent="MainLayout/LeftColumn"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 25
+[node name="Title" type="Label" parent="TopBar"]
+offset_left = 28.0
+offset_top = 18.0
+offset_right = 280.0
+offset_bottom = 48.0
+theme_override_font_sizes/font_size = 24
 text = "POSTCARD CITY"
 
-[node name="Subtitle" type="Label" parent="MainLayout/LeftColumn"]
+[node name="Status" type="Label" parent="TopBar"]
+offset_left = 950.0
+offset_top = 22.0
+offset_right = 1410.0
+offset_bottom = 48.0
+text = "Month 0 · Budget · Population"
+
+[node name="MainLayout" type="HBoxContainer" parent="."]
+offset_left = 20.0
+offset_top = 82.0
+offset_right = -20.0
+offset_bottom = -112.0
+theme_override_constants/separation = 16
+
+[node name="LeftColumn" type="VBoxContainer" parent="MainLayout"]
+custom_minimum_size = Vector2(230, 0)
 layout_mode = 2
-text = "Build a city people can still inhabit."
+
+[node name="ToolTitle" type="Label" parent="MainLayout/LeftColumn"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "CITY TOOLS"
+
+[node name="Hint" type="Label" parent="MainLayout/LeftColumn"]
+layout_mode = 2
+autowrap_mode = 2
+text = "Click a plot, choose a building, preview it and build."
 
 [node name="MetricPanel" type="VBoxContainer" parent="MainLayout/LeftColumn"]
 layout_mode = 2
@@ -56,61 +72,59 @@ size_flags_horizontal = 3
 layout_mode = 2
 
 [node name="MapView" type="Control" parent="MainLayout/MiddleColumn"]
-custom_minimum_size = Vector2(720, 560)
+custom_minimum_size = Vector2(760, 570)
 size_flags_vertical = 3
 layout_mode = 2
 script = ExtResource("2")
 
-[node name="ZoneInfo" type="Label" parent="MainLayout/MiddleColumn"]
+[node name="PlotInfo" type="Label" parent="MainLayout/MiddleColumn"]
 layout_mode = 2
 autowrap_mode = 2
-text = "Click a plot to inspect it."
+text = "No plot selected. Click the city to inspect a parcel."
 
 [node name="BuildInfo" type="Label" parent="MainLayout/MiddleColumn"]
 layout_mode = 2
 autowrap_mode = 2
-text = "Choose a building, then click Build."
+text = "No building selected."
 
 [node name="BuildPanel" type="HBoxContainer" parent="MainLayout/MiddleColumn"]
 layout_mode = 2
 
 [node name="SocialHousing" type="Button" parent="MainLayout/MiddleColumn/BuildPanel"]
 layout_mode = 2
-text = "Social housing"
+text = "Residential"
 
 [node name="HospitalUpgrade" type="Button" parent="MainLayout/MiddleColumn/BuildPanel"]
 layout_mode = 2
-text = "Hospital upgrade"
+text = "Civic"
 
 [node name="CommercialBlock" type="Button" parent="MainLayout/MiddleColumn/BuildPanel"]
 layout_mode = 2
-text = "Commercial block"
+text = "Commercial"
+
+[node name="Cancel" type="Button" parent="MainLayout/MiddleColumn/BuildPanel"]
+layout_mode = 2
+text = "Cancel"
 
 [node name="Build" type="Button" parent="MainLayout/MiddleColumn/BuildPanel"]
 layout_mode = 2
-text = "Build"
+text = "Place building"
 
 [node name="RightColumn" type="VBoxContainer" parent="MainLayout"]
-custom_minimum_size = Vector2(300, 0)
+custom_minimum_size = Vector2(285, 0)
 layout_mode = 2
 
 [node name="Timeline" parent="MainLayout/RightColumn" instance=ExtResource("4")]
 layout_mode = 2
 
 [node name="EventLog" parent="MainLayout/RightColumn" instance=ExtResource("3")]
-custom_minimum_size = Vector2(0, 250)
+custom_minimum_size = Vector2(0, 260)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="CrisisPanel" parent="." instance=ExtResource("5")]
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -280.0
-offset_top = -150.0
-offset_right = 280.0
-offset_bottom = 150.0
+[node name="BottomHint" type="Label" parent="."]
+offset_left = 24.0
+offset_top = 850.0
+offset_right = 1410.0
+offset_bottom = 882.0
+text = "Mouse: select plots · Space: advance month · Build: place the previewed building"

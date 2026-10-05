@@ -1,10 +1,11 @@
-; Godot 4 project configuration file.
-; The presentation prototype is intentionally isolated from the Python simulator.
+; Engine configuration file.
+; Postcard City playable Godot demo
+
 config_version=5
 
 [application]
-config/name="Postcard City Vertical Slice"
-run/main_scene="res://scenes/app/bootstrap.tscn"
+config/name="Postcard City"
+run/main_scene="res://scenes/screens/city_builder.tscn"
 
 [display]
 window/size/viewport_width=1440
@@ -16,8 +17,8 @@ window/stretch/mode="canvas_items"
 [rendering]
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-textures/default_filters/use_nearest_mipmap_filter=false
+environment/defaults/default_clear_color=Color(0.04, 0.06, 0.08, 1)
 
-[autoload]
-AppRouter="*res://scripts/app_router.gd"
-SettingsService="*res://scripts/settings_service.gd"
+[input]
+select_primary={"deadzone": 0.5, "events": [Object(InputEventMouseButton,"button_index":1)]}
+advance_time={"deadzone": 0.5, "events": [Object(InputEventKey,"physical_keycode":32)]}
