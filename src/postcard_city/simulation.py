@@ -68,31 +68,28 @@ class Simulation:
         if parcel.tenure != "available" or not parcel.public_control: raise ValueError(f"Parcel unavailable: {parcel_id}")
         if mode not in {"sale_freehold", "sale_restricted", "lease_ground"}: raise ValueError(f"Unknown land mode: {mode}")
         if mode.startswith("sale"):
-            self.state.budget += parcel.market_value * (1.0 if mode == "sale_freehold" else 0.75)
-            parcel.tenure = "sold"; parcel.public_control = False
-            self._trace(f"land:{mode}", "budget", parcel.market_value, "public parcel sold; ownership and future control are lost")
+            receipt = parcel.market_value if mode == "sale_freehold" else parcel.market_value * 0.75
+            self.state.budget += receipt; parcel.tenure = "sold"; parcel.public_control = False
+            self._trace(f"land:{mode}", "budget", receipt, "public parcel sold; ownership and future control are lost")
         else:
-            parcel.tenure = "leased"; self.state.budget += parcel.market_value * 0.03
-            self._trace("land:lease_ground", "budget", parcel.market_value * 0.03, "ground lease retains ownership and creates recurring administrative obligations")
+            parcel.tenure = "leased"; receipt = parcel.market_value * 0.03; self.state.budget += receipt
+            self._trace("land:lease_ground", "budget", receipt, "ground lease retains ownership and creates recurring administrative obligations")
 
     def start_social_housing(self, units: int) -> None:
         if units <= 0: raise ValueError("units must be positive")
-        if self.state.social_housing.construction_progress > 0 or self.state.social_housing.units > 0: raise ValueError("social housing project already exists")
+        h = self.state.social_housing
+        if h.construction_progress > 0 or h.units > 0: raise ValueError("social housing project already exists")
         cost = units * self.housing_parameters["construction_cost_per_unit"]
         if cost > self.state.budget: raise ValueError("insufficient budget")
-        self.state.budget -= cost; self.state.social_housing.units = units; self.state.social_housing.construction_progress = 0.0
+        self.state.budget -= cost; h.units = units; h.construction_progress = 0.0
         self._trace("social_housing_construction", "budget", -cost, "capital cost for a delayed public housing project")
 
     def advance_month(self) -> RegionState:
-        self.state.month += 1
-        profile = self.profiles[self.state.project_status]
-        growth = self.parameters["monthly_base_tourist_growth"] + profile["growth_bonus"]
-        before = self.state.tourism_visitors; self.state.tourism_visitors *= 1 + growth
+        self.state.month += 1; profile = self.profiles[self.state.project_status]
+        growth = self.parameters["monthly_base_tourist_growth"] + profile["growth_bonus"]; before = self.state.tourism_visitors; self.state.tourism_visitors *= 1 + growth
         self._trace("tourism_demand", "tourism_visitors", self.state.tourism_visitors - before, "monthly demand and project profile")
-        self.state.tourism_revenue = self.state.tourism_visitors * self.parameters["tourist_spend"] * self.parameters["tourism_tax_rate"]
-        self.state.budget += self.state.tourism_revenue - self.parameters["monthly_public_cost"]
-        self._update_housing(profile); self._update_migration(); self._update_social_housing(); self._update_metrics(True); self._resolve_events(); self._clamp()
-        return self.state
+        self.state.tourism_revenue = self.state.tourism_visitors * self.parameters["tourist_spend"] * self.parameters["tourism_tax_rate"]; self.state.budget += self.state.tourism_revenue - self.parameters["monthly_public_cost"]
+        self._update_housing(profile); self._update_migration(); self._update_social_housing(); self._update_metrics(True); self._resolve_events(); self._clamp(); return self.state
 
     def run(self, months: int, scheduled: Iterable[tuple[int, Decision]] = ()) -> RegionState:
         schedule = {}
@@ -105,46 +102,30 @@ class Simulation:
         return self.state
 
     def _update_housing(self, profile: dict[str, float]) -> None:
-        core = self.state.districts["historic_core"]; outer = self.state.districts["outer_district"]
-        converted = int(core.residential_units * profile["conversion_rate"]); core.residential_units -= converted; core.short_term_rental_units += converted
-        core.tourist_pressure = min(1, self.state.tourism_visitors / self.parameters["tourist_saturation_visitors"])
-        total_supply = sum(d.residential_units + d.short_term_rental_units for d in self.state.districts.values()) + self.state.social_housing.occupied_units
-        total_demand = sum(c.population for c in self.state.migration.values()) * (1 + self.migration_parameters["tourism_pressure_penalty"] * core.tourist_pressure)
-        vacancy = max(0.0, total_supply - total_demand) / max(total_demand, 1)
-        pressure = self.housing_parameters["rent_pressure_weight"] * max(0, 1 - vacancy) + self.housing_parameters["tourism_demand_weight"] * core.tourist_pressure - self.housing_parameters["supply_relief_weight"] * min(vacancy, 1)
-        for district in self.state.districts.values():
-            before = district.average_rent; district.average_rent *= max(0.995, 1 + 0.003 * pressure); self._trace("housing_market", f"{district.id}.average_rent", district.average_rent - before, "housing demand, tourism pressure, and available supply")
+        core = self.state.districts["historic_core"]; outer = self.state.districts["outer_district"]; converted = int(core.residential_units * profile["conversion_rate"]); core.residential_units -= converted; core.short_term_rental_units += converted; core.tourist_pressure = min(1, self.state.tourism_visitors / self.parameters["tourist_saturation_visitors"])
+        long_term_supply = sum(d.residential_units for d in self.state.districts.values()) + self.state.social_housing.occupied_units; demand = sum(c.population for c in self.state.migration.values()) * (1 + self.migration_parameters["tourism_pressure_penalty"] * core.tourist_pressure); vacancy = max(0.0, long_term_supply - demand) / max(demand, 1); pressure = self.housing_parameters["rent_pressure_weight"] * max(0, 1 - vacancy) + self.housing_parameters["tourism_demand_weight"] * core.tourist_pressure - self.housing_parameters["supply_relief_weight"] * min(vacancy, 1)
+        for district in self.state.districts.values(): before = district.average_rent; district.average_rent *= max(0.995, 1 + 0.003 * pressure); self._trace("housing_market", f"{district.id}.average_rent", district.average_rent - before, "housing demand, tourism pressure, and available long-term supply")
         outer.transport_reliability = max(0, min(1, outer.transport_reliability - 0.004 * core.tourist_pressure + profile["transport_bonus"]))
 
     def _update_social_housing(self) -> None:
         h = self.state.social_housing
         if h.units <= 0: return
-        h.construction_progress = min(1, h.construction_progress + 1 / max(h.construction_months, 1))
+        h.construction_progress = min(1, h.construction_progress + 1 / max(h.construction_months, 1));
         if h.construction_progress >= 1: h.occupied_units = h.units
-        cost = h.monthly_operating_cost + h.monthly_maintenance_cost
-        if h.occupied_units: cost -= h.occupied_units * h.monthly_target_rent * (1 - h.arrears_rate)
-        arrears = h.occupied_units * h.monthly_target_rent * h.arrears_rate
-        h.cumulative_arrears += arrears; self.state.budget -= cost + arrears
-        self._trace("social_housing", "budget", -cost - arrears, "operating cost, maintenance, rent income, and arrears")
+        gross_rent = h.occupied_units * h.monthly_target_rent; arrears = gross_rent * h.arrears_rate; rent_income = gross_rent - arrears; operating = h.monthly_operating_cost; maintenance = h.monthly_maintenance_cost; net = rent_income - operating - maintenance
+        h.cumulative_arrears += arrears; h.cumulative_rent_income += rent_income; h.cumulative_operating_cost += operating; h.cumulative_maintenance_cost += maintenance; self.state.budget += net
+        self._trace("social_housing", "budget", net, "rent income minus operating cost, maintenance, and arrears")
 
     def _update_migration(self) -> None:
-        affordability = max(0, 1 - self.state.districts["historic_core"].average_rent / 2000)
-        services = self.state.metrics.get("healthcare_staffing", 0.75)
-        jobs = min(1, self.state.districts["outer_district"].jobs / 120000)
-        tourism = self.state.districts["historic_core"].tourist_pressure
+        affordability = max(0, 1 - self.state.districts["historic_core"].average_rent / 2000); services = self.state.metrics.get("healthcare_staffing", 0.75); jobs = min(1, self.state.districts["outer_district"].jobs / 120000); tourism = self.state.districts["historic_core"].tourist_pressure
         for cohort in self.state.migration.values():
-            attractiveness = (self.migration_parameters["housing_affordability_weight"] * affordability * cohort.housing_sensitivity + self.migration_parameters["jobs_weight"] * jobs * cohort.job_sensitivity + self.migration_parameters["services_weight"] * services * cohort.service_sensitivity - self.migration_parameters["tourism_pressure_penalty"] * tourism)
-            net = cohort.population * cohort.mobility * (self.migration_parameters["base_arrival_rate"] * attractiveness - self.migration_parameters["base_departure_rate"] * max(0, 0.5 - attractiveness))
-            cohort.population = max(0, cohort.population + net); cohort.net_migration = net
-            self._trace("regional_attractiveness", f"migration.{cohort.id}", net, "housing, jobs, services, and tourism pressure change migration flows")
+            attractiveness = self.migration_parameters["housing_affordability_weight"] * affordability * cohort.housing_sensitivity + self.migration_parameters["jobs_weight"] * jobs * cohort.job_sensitivity + self.migration_parameters["services_weight"] * services * cohort.service_sensitivity - self.migration_parameters["tourism_pressure_penalty"] * tourism; net = cohort.population * cohort.mobility * (self.migration_parameters["base_arrival_rate"] * attractiveness - self.migration_parameters["base_departure_rate"] * max(0, 0.5 - attractiveness)); cohort.population = max(0, cohort.population + net); cohort.net_migration = net; self._trace("regional_attractiveness", f"migration.{cohort.id}", net, "housing, jobs, services, and tourism pressure change migration flows")
 
     def _update_metrics(self, record: bool) -> None:
-        core = self.state.districts["historic_core"]; staff = sum(d.healthcare_staff for d in self.state.districts.values()); capacity = sum(d.healthcare_capacity for d in self.state.districts.values())
-        ratio = staff / capacity; population = sum(c.population for c in self.state.migration.values())
-        self.state.metrics.update({"housing_affordability": max(0, 1 - core.average_rent / 2000), "healthcare_staffing": ratio, "tourism_pressure": core.tourist_pressure, "permanent_population": population, "essential_worker_net_migration": self.state.migration["essential_workers"].net_migration, "public_housing_net_cashflow": -(self.state.social_housing.monthly_operating_cost + self.state.social_housing.monthly_maintenance_cost + self.state.social_housing.cumulative_arrears)})
+        core = self.state.districts["historic_core"]; staff = sum(d.healthcare_staff for d in self.state.districts.values()); capacity = sum(d.healthcare_capacity for d in self.state.districts.values()); ratio = staff / capacity; population = sum(c.population for c in self.state.migration.values()); h = self.state.social_housing; net_cash = (h.cumulative_rent_income - h.cumulative_operating_cost - h.cumulative_maintenance_cost - h.cumulative_arrears) / max(self.state.month, 1)
+        self.state.metrics.update({"housing_affordability": max(0, 1 - core.average_rent / 2000), "healthcare_staffing": ratio, "tourism_pressure": core.tourist_pressure, "permanent_population": population, "essential_worker_net_migration": self.state.migration["essential_workers"].net_migration, "public_housing_net_cashflow": net_cash})
         shortfall = self.parameters["healthcare_staffing_threshold"] - ratio
-        if record and shortfall > 0:
-            self.state.institutional_trust -= 0.2 * shortfall; self.state.political_support -= 0.15 * shortfall
+        if record and shortfall > 0: self.state.institutional_trust -= 0.2 * shortfall; self.state.political_support -= 0.15 * shortfall
 
     def _resolve_events(self) -> None:
         for event in self.scenario["events"]:
@@ -155,8 +136,7 @@ class Simulation:
             condition = when.get("metric_gt")
             if condition and self.state.metrics.get(condition["name"], 0) <= condition["value"]: continue
             self.state.event_history.append(event["id"])
-            for key, attr in (("political_support_delta", "political_support"), ("institutional_trust_delta", "institutional_trust")):
-                delta = event["effects"].get(key, 0); setattr(self.state, attr, getattr(self.state, attr) + delta)
+            for key, attr in (("political_support_delta", "political_support"), ("institutional_trust_delta", "institutional_trust")): delta = event["effects"].get(key, 0); setattr(self.state, attr, getattr(self.state, attr) + delta)
 
     def _clamp(self) -> None:
         self.state.institutional_trust = max(0, min(1, self.state.institutional_trust)); self.state.political_support = max(0, min(1, self.state.political_support)); self.state.economic_diversity = max(0, min(1, self.state.economic_diversity))

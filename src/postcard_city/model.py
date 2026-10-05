@@ -70,6 +70,9 @@ class SocialHousingState:
     essential_worker_share: float
     occupied_units: int = 0
     cumulative_arrears: float = 0.0
+    cumulative_rent_income: float = 0.0
+    cumulative_operating_cost: float = 0.0
+    cumulative_maintenance_cost: float = 0.0
 
 
 @dataclass

@@ -1,13 +1,14 @@
 # Changelog
 
-## Unreleased — Housing, land, and migration prototype
+## Unreleased — Integration stabilization
 
-### Added
-- Finite public parcels with sale, restricted sale, and ground-lease tenure.
-- Social-housing construction delay, operating costs, maintenance, arrears, and essential-worker allocation.
-- Cohort migration driven by affordability, employment, services, transport, tourism pressure, and quality of life.
-- Public-housing net cash-flow metric; housing is not assumed to be fiscally profitable.
-- Tests for irreversible land sale, retained lease control, delayed supply, arrears, migration, determinism, and invariants.
+### Fixed and verified
+- Housing supply, migration, public land, and social housing now participate in one deterministic vertical-slice simulation.
+- Short-term rentals no longer count as long-term residential supply when calculating housing pressure.
+- Public-housing cash flow accounts separately for rent income, operating cost, maintenance, and arrears.
+- Invalid land actions fail before mutating state.
+- Social housing can be started explicitly and reaches occupancy only after its configured construction delay.
+- Added full-slice integration and replay tests.
 
-### Explicit calibration boundary
-Housing and migration coefficients are prototype calibration. They are not empirical universal constants and must later be exposed through mechanism-card configuration and robustness analysis.
+### Calibration boundary
+Housing and migration coefficients remain prototype calibration. They must be replaced or parameterized through mechanism-card resolution and robustness analysis before production.
