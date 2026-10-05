@@ -11,7 +11,6 @@ var selected_intervention: String = ""
 @onready var tradeoff: Label = $MainLayout/MiddleColumn/DecisionPanel/Tradeoff
 @onready var confirm_button: Button = $MainLayout/MiddleColumn/DecisionPanel/Confirm
 @onready var map_view: Control = $MainLayout/MiddleColumn/MapView
-@onready var pause_button: Button = $MainLayout/RightColumn/Timeline/Pause
 
 func _ready() -> void:
     session.state_updated.connect(_on_state_updated)
@@ -23,9 +22,9 @@ func _ready() -> void:
     $MainLayout/MiddleColumn/DecisionPanel/DeferResponse.pressed.connect(func(): _select("defer_response"))
     confirm_button.pressed.connect(_confirm)
     timeline.advance_pressed.connect(session.advance_month)
-    timeline.pause_pressed.connect(_toggle_pause)
+    if timeline.has_signal("pause_pressed"):
+        timeline.pause_pressed.connect(_toggle_pause)
     $ShowPostcard.pressed.connect(_show_postcard_comparison)
-    crisis_panel.crisis_choice.connect(session.resolve_crisis)
     start_demo()
 
 func start_demo() -> void:
@@ -38,7 +37,6 @@ func _select(intervention_id: String) -> void:
     var details: Dictionary = session.intervention_details(intervention_id)
     tradeoff.text = "%s\nCost: %s | Effect: %s | Risk: %s\n\n%s" % [details.get("title", ""), details.get("cost", ""), details.get("effect", ""), details.get("risk", ""), details.get("description", "")]
     confirm_button.disabled = false
-    crisis_panel.set_selected(intervention_id)
 
 func _confirm() -> void:
     session.confirm_intervention()
@@ -46,7 +44,8 @@ func _confirm() -> void:
     tradeoff.text = "Decision recorded. Advance time to reveal its consequence."
 
 func _toggle_pause() -> void:
-    timeline.set_paused(not timeline.is_paused())
+    if timeline.has_method("set_paused"):
+        timeline.set_paused(not timeline.is_paused())
 
 func _on_state_updated(current: Dictionary) -> void:
     _render_metrics(current)
