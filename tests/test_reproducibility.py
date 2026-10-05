@@ -1,12 +1,12 @@
 import json
 from pathlib import Path
 
-from postcard_city.scenario import build_scenario
+from postcard_city.scenario import load_scenario
 from postcard_city.simulation import Simulation
 
 
 def replay_scenario():
-    return build_scenario(
+    return load_scenario(
         {
             "name": "replay-fixture",
             "population": 1000,
