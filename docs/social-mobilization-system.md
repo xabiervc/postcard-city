@@ -48,7 +48,7 @@ The player can recognize demands, negotiate with representatives, offer reforms,
 
 The system models good-faith negotiation through recognized representatives, independent mediation, transparent timetables, public commitments, and reviewable agreements. De-escalation can include restoring lawful assembly access, separating public-safety planning from political retaliation, communicating clear constraints, and providing nonviolent routes for grievances.
 
-The response model distinguishes proportionate public-safety measures from collective punishment. Any restriction on assembly must have a stated legal basis, a narrow scope, a time limit, an appeal route, and independent oversight. Excessive or discriminatory responses increase fear, polarisation, movement recruitment, and long-term legitimacy loss.
+The response model distinguishes proportionate public-safety measures from collective punishment. Any restriction on assembly must have a stated legal basis, a narrow scope, a time limit, an appeal route, and independent oversight. Restrictions must satisfy proportionality and due process. Excessive or discriminatory responses increase fear, polarisation, movement recruitment, and long-term legitimacy loss.
 
 ## Consequences and outcomes
 
@@ -67,8 +67,8 @@ The model records immediate disruption separately from long-term effects. It tra
 
 ## Rights constraints
 
-The simulation protects lawful assembly, expression, association, due process, equal treatment, and access to independent review. Restrictions must be proportionate, time-limited, legally grounded, and auditable. The model distinguishes public-safety planning from political retaliation and does not reward collective punishment.
+Peaceful protest is a legitimate civic activity. The simulation protects lawful assembly, expression, association, due process, equal treatment, and access to independent review. Restrictions must be proportionate, time-limited, legally grounded, and auditable. The model distinguishes public-safety planning from political retaliation and does not reward collective punishment.
 
 ## Safety and ethics
 
-The system does not reward atrocities, collective punishment, or targeting protected groups. It avoids graphic depiction and does not turn civilian harm into spectacle. Political disagreement remains legible through demands, institutions, trade-offs, and consequences rather than tactical violence.
+The system does not reward atrocities, collective punishment, or targeting protected groups. It avoids graphic depiction and does not turn civilian harm into spectacle. Tactical guidance for violence, evasion, or wrongdoing is never taught. Political disagreement remains legible through demands, institutions, trade-offs, and consequences rather than tactical violence.
