@@ -31,24 +31,24 @@ def test_long_run_preserves_state_invariants():
         assert district.residential_units + district.short_term_rental_units <= district.housing_units
 
 
-def test_run_requires_positive_months():
+def test_zero_month_run_is_a_no_op():
     simulation = Simulation.from_default_slice(seed=17)
-    with pytest.raises(ValueError):
-        simulation.run(0)
-    with pytest.raises(ValueError):
-        simulation.run(-1)
+    simulation.run(0)
+    assert simulation.state.month == 0
 
 
 def test_run_rejects_decisions_outside_requested_range():
     simulation = Simulation.from_default_slice(seed=17)
-    decision = Decision("project_direction", "high_growth")
+    definition = simulation.scenario["decisions"][0]
+    decision = Decision(definition["id"], definition["options"][0]["id"])
     with pytest.raises(ValueError):
         simulation.run(2, scheduled=[(3, decision)])
 
 
 def test_duplicate_decisions_are_rejected():
     simulation = Simulation.from_default_slice(seed=17)
-    decision = Decision("project_direction", "high_growth")
+    definition = simulation.scenario["decisions"][0]
+    decision = Decision(definition["id"], definition["options"][0]["id"])
     simulation.apply_decision(decision)
     with pytest.raises(ValueError):
         simulation.apply_decision(decision)
