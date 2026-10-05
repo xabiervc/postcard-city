@@ -1,7 +1,7 @@
 extends Control
 
 var session := SimulationSession.new()
-var selected_intervention := ""
+var selected_intervention: String = ""
 @onready var metric_panel: VBoxContainer = $MainLayout/LeftColumn/MetricPanel
 @onready var event_log = $MainLayout/RightColumn/EventLog
 @onready var timeline = $MainLayout/RightColumn/Timeline
@@ -35,8 +35,8 @@ func start_demo() -> void:
 func _select(intervention_id: String) -> void:
     selected_intervention = intervention_id
     session.select_intervention(intervention_id)
-    var details := session.intervention_details(intervention_id)
-    tradeoff.text = "%s\nCost: %s | Effect: %s | Risk: %s\n\n%s" % [details.title, details.cost, details.effect, details.risk, details.description]
+    var details: Dictionary = session.intervention_details(intervention_id)
+    tradeoff.text = "%s\nCost: %s | Effect: %s | Risk: %s\n\n%s" % [details.get("title", ""), details.get("cost", ""), details.get("effect", ""), details.get("risk", ""), details.get("description", "")]
     confirm_button.disabled = false
     crisis_panel.set_selected(intervention_id)
 
@@ -50,13 +50,13 @@ func _toggle_pause() -> void:
 
 func _on_state_updated(current: Dictionary) -> void:
     _render_metrics(current)
-    timeline.set_month(current.get("month", 0))
+    timeline.set_month(int(current.get("month", 0)))
     event_log.set_entries(current.get("events", []))
     testimonies.set_state(current)
     map_view.set_state(current)
 
 func _on_event_received(event: Dictionary) -> void:
-    event_log.add_entry(event.get("text", ""))
+    event_log.add_entry(str(event.get("text", "")))
 
 func _on_crisis_triggered(crisis: Dictionary) -> void:
     crisis_panel.show_crisis(crisis)
@@ -65,18 +65,19 @@ func _on_crisis_triggered(crisis: Dictionary) -> void:
 
 func _on_decision_applied(decision: Dictionary) -> void:
     crisis_panel.visible = false
-    event_log.add_entry("Decision applied: %s" % decision.title)
+    event_log.add_entry("Decision applied: %s" % str(decision.get("title", "")))
 
 func _on_outcome_changed(outcome: Dictionary) -> void:
-    tradeoff.text = outcome.text
+    tradeoff.text = str(outcome.get("text", ""))
 
 func _render_metrics(current: Dictionary) -> void:
     for child in metric_panel.get_children():
         child.queue_free()
-    for item in [["Budget", "EUR %.1fM" % (current.get("budget", 0.0) / 1000000.0)], ["Tourism pressure", "%.0f%%" % (current.get("tourism_pressure", 0.0) * 100.0)], ["Housing affordability", "%.0f%%" % (current.get("housing_affordability", 0.0) * 100.0)], ["Healthcare staffing", "%.0f%%" % (current.get("healthcare_staffing", 0.0) * 100.0)], ["District health", "%.0f%%" % (current.get("district_health", 0.0) * 100.0)]]:
-        var card := preload("res://scenes/ui/metric_card.tscn").instantiate()
+    var metrics: Array[Array] = [["Budget", "EUR %.1fM" % (float(current.get("budget", 0.0)) / 1000000.0)], ["Tourism pressure", "%.0f%%" % (float(current.get("tourism_pressure", 0.0)) * 100.0)], ["Housing affordability", "%.0f%%" % (float(current.get("housing_affordability", 0.0)) * 100.0)], ["Healthcare staffing", "%.0f%%" % (float(current.get("healthcare_staffing", 0.0)) * 100.0)], ["District health", "%.0f%%" % (float(current.get("district_health", 0.0)) * 100.0)]]
+    for item: Array in metrics:
+        var card: Control = preload("res://scenes/ui/metric_card.tscn").instantiate()
         metric_panel.add_child(card)
-        card.set_metric(item[0], item[1])
+        card.set_metric(str(item[0]), str(item[1]))
 
 func _show_postcard_comparison() -> void:
     postcard_compare.show_comparison(session.postcard_comparison())
