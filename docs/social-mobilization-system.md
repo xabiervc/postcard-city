@@ -1,108 +1,69 @@
-# Social Mobilization System
+# Social Mobilization and Protest System
 
 Status: normative pre-implementation design.
 Version: 1.0.
 
 ## Purpose
 
-Postcard City must represent that residents, workers, businesses, unions, professional bodies, journalists, opposition groups, neighbourhood associations, students, and civil-society organisations can organise collectively. Huelgas, protests, boycotts, occupations, petitions, strikes, and campaigns are not random nuisances: they are signals of conflict, distributional harm, institutional distrust, or competing public goals.
+The system models collective action, public grievances, organized protest, labor action, civic campaigns, and institutional negotiation. It treats participants as political actors and communities, not as anonymous unrest counters.
 
-The player governs a society, not only a budget. Mobilisation creates political and economic consequences while also giving affected groups voice.
+## Mobilization forms
 
-## Mobilisation families
+Possible forms include:
 
-The catalog may include:
+- petitions and civic campaigns;
+- public meetings and marches;
+- strikes and workplace action;
+- boycotts and consumer campaigns;
+- sit-ins and symbolic occupations;
+- online coordination and information campaigns;
+- mutual-aid and neighborhood organizing;
+- civil disobedience represented at a high level.
 
-- labour strikes and essential-service stoppages;
-- transport, port, school, hospital, and public-sector strikes;
-- neighbourhood demonstrations about housing, tourism, pollution, safety, or displacement;
-- student, professional, environmental, and cultural movements;
-- tenant campaigns, rent strikes, shelter occupations, and housing assemblies;
-- consumer boycotts and destination boycotts;
-- business lockouts and employer campaigns;
-- petitions, referendums, legal challenges, and civic assemblies;
-- civil disobedience and non-violent direct action;
-- opposition alliances, media campaigns, whistleblowing, and public hearings;
-- farmer, fisher, seasonal-worker, and commuter mobilisation;
-- regional or identity-based autonomy movements.
+The simulation does not provide operational guidance for evading law enforcement, attacking people, damaging property, or organizing violence.
 
 ## Causes and triggers
 
-Mobilisation probability and size depend on:
+Mobilization can be driven by:
 
-- perceived distributional harm;
-- rent, wage, service, and unemployment pressure;
-- trust and legitimacy;
-- organisation density and leadership;
-- media environment and information quality;
-- prior promises and broken commitments;
-- repression or exclusion history;
-- available legal channels;
-- visible crisis signals;
-- timing, seasonality, and cumulative grievances.
+- unemployment, inflation, housing pressure, or service cuts;
+- corruption, discrimination, or perceived impunity;
+- environmental harm or unsafe infrastructure;
+- electoral disputes or constitutional crises;
+- unpopular emergency measures;
+- labor disputes and workplace safety;
+- misinformation, censorship, or loss of media trust;
+- foreign influence or cross-border solidarity.
 
-A protest is not necessarily evidence that a policy is wrong. It may reflect a concentrated loss, a minority interest, misinformation, a genuine rights claim, or a conflict between legitimate objectives.
+Triggers interact with prior trust, organizational capacity, perceived fairness, police legitimacy, media environment, and the availability of lawful participation channels.
 
-## Player responses
+## Actors and demands
 
-The player may:
+Each movement has visible and latent demands, leadership or network structure, constituency, coalition partners, internal factions, tolerance for disruption, and willingness to negotiate. Demands may evolve as the government responds.
 
-- negotiate and provide transparent information;
-- open hearings or citizens’ assemblies;
-- offer compensation, rent relief, wage support, or service guarantees;
-- revise, delay, or cancel a project;
-- use mediation, arbitration, or independent review;
-- maintain essential services through lawful contingency plans;
-- communicate uncertainty and publish evidence;
-- enforce proportionate, lawful public-order rules with oversight.
+The player can recognize demands, offer reforms, appoint mediators, open hearings, publish evidence, call elections or referenda where lawful, adjust budgets, or refuse concessions. Every choice has fiscal, institutional, and legitimacy effects.
 
-The design does not reward indiscriminate repression. Aggressive or unlawful responses can reduce trust, increase polarisation, create legal costs, radicalise movements, and produce future mobilisation.
+## Negotiation and de-escalation
 
-No document or mechanic provides operational guidance for violent wrongdoing, sabotage, evading law enforcement, or harming people.
+The system models good-faith negotiation through recognized representatives, independent mediation, transparent timetables, public commitments, and reviewable agreements. De-escalation can include restoring lawful assembly access, separating public-safety planning from political retaliation, communicating clear constraints, and providing nonviolent routes for grievances.
 
-## Escalation and resolution
+The response model distinguishes proportionate public-safety measures from collective punishment. Any restriction on assembly must have a stated legal basis, a narrow scope, a time limit, an appeal route, and independent oversight. Excessive or discriminatory responses increase fear, polarization, movement recruitment, and long-term legitimacy loss.
 
-Mobilisation has stages:
+## Escalation and outcomes
 
-1. grievance and informal organising;
-2. petitions, media attention, and formal demands;
-3. demonstrations, strikes, boycotts, or occupations;
-4. negotiation, concessions, legal process, or escalation;
-5. resolution, compromise, fatigue, fragmentation, or institutional reform.
+Mobilization may de-escalate, fragment, achieve negotiated reform, persist through strikes or demonstrations, or produce a broader constitutional crisis. Outcomes depend on responsiveness, perceived fairness, economic conditions, information quality, organizational cohesion, and external shocks.
 
-Escalation is not automatic. Early, credible negotiation can reduce it. Unmet demands can increase duration and participation. A successful mobilisation can improve policy and legitimacy; a failed one can leave fatigue, debt, distrust, or organisational memory.
-
-## Consequences
-
-Track separately:
-
-- participation and affected groups;
-- lost workdays and essential-service availability;
-- budget, tax revenue, compensation, and business losses;
-- rent arrears, housing access, and displacement;
-- trust, support, polarisation, and legitimacy;
-- tourism reputation and investment;
-- migration, health, and education;
-- legal findings and institutional reforms.
-
-A protest should not be reduced to a single happiness penalty. The player must see who mobilised, why, what evidence exists, which alternatives were available, and who benefited or lost.
+The model records immediate disruption separately from long-term effects on trust, civic participation, institutional legitimacy, social cohesion, and reform durability.
 
 ## Complexity levels
 
-| Level | Mobilization behavior |
+| Level | Social mobilization behavior |
 |---|---|
-| Relaxed | Major movements with clear demands and simplified negotiations |
-| Standard | Multiple actors, strikes, protests, boycotts, and visible trust effects |
-| Advanced | Coalition-building, misinformation, counter-mobilisation, occupations, legal challenges, and essential-service dilemmas |
-| Expert | Interacting movements, long memory, regional spillovers, polarisation, contested evidence, and path-dependent legitimacy |
+| Relaxed | Petitions, hearings, and small demonstrations with clear institutional responses |
+| Standard | Strikes, boycotts, coalition campaigns, and negotiated reforms |
+| Advanced | Sustained protest waves, polarization, misinformation, and contested legitimacy |
+| Expert | Compound mobilization during economic, constitutional, humanitarian, or security crises |
 
-Content and event-family filters must be available at every level.
+## Safety and ethics
 
-## Safety and representation
-
-- Peaceful protest is a legitimate civic activity, not inherently a failure state.
-- The game does not use graphic violence as spectacle.
-- Rights, due process, accessibility, and proportionality are explicit constraints.
-- Protected groups are not targeted through hidden rules.
-- Players receive enough context to understand demands and uncertainty.
-- Violent wrongdoing is abstracted and never taught.
+The system does not reward atrocities, collective punishment, or targeting protected groups. It avoids graphic depiction and does not turn civilian harm into spectacle. Political disagreement remains legible through demands, institutions, trade-offs, and consequences rather than tactical violence.
