@@ -62,7 +62,7 @@ text = "CITY TOOLS"
 [node name="Hint" type="Label" parent="MainLayout/LeftColumn"]
 layout_mode = 2
 autowrap_mode = 2
-text = "Click a plot, choose a building, preview it and build."
+text = "Select a plot, choose a category and place a building."
 
 [node name="MetricPanel" type="VBoxContainer" parent="MainLayout/LeftColumn"]
 layout_mode = 2
@@ -90,17 +90,17 @@ text = "No building selected."
 [node name="BuildPanel" type="HBoxContainer" parent="MainLayout/MiddleColumn"]
 layout_mode = 2
 
-[node name="SocialHousing" type="Button" parent="MainLayout/MiddleColumn/BuildPanel"]
+[node name="Residential" type="Button" parent="MainLayout/MiddleColumn/BuildPanel"]
 layout_mode = 2
 text = "Residential"
 
-[node name="HospitalUpgrade" type="Button" parent="MainLayout/MiddleColumn/BuildPanel"]
+[node name="Services" type="Button" parent="MainLayout/MiddleColumn/BuildPanel"]
 layout_mode = 2
-text = "Civic"
+text = "Services"
 
-[node name="CommercialBlock" type="Button" parent="MainLayout/MiddleColumn/BuildPanel"]
+[node name="Commerce" type="Button" parent="MainLayout/MiddleColumn/BuildPanel"]
 layout_mode = 2
-text = "Commercial"
+text = "Commerce"
 
 [node name="Cancel" type="Button" parent="MainLayout/MiddleColumn/BuildPanel"]
 layout_mode = 2
@@ -127,4 +127,4 @@ offset_left = 24.0
 offset_top = 850.0
 offset_right = 1410.0
 offset_bottom = 882.0
-text = "Mouse: select plots · Space: advance month · Build: place the previewed building"
+text = "Mouse: select a plot · Space: advance month · Place building: confirm construction"

@@ -9,14 +9,16 @@ var selected_building: String = ""
 @onready var build_info: Label = $MainLayout/MiddleColumn/BuildInfo
 @onready var event_log = $MainLayout/RightColumn/EventLog
 @onready var timeline = $MainLayout/RightColumn/Timeline
+@onready var status: Label = $TopBar/Status
 
 func _ready() -> void:
     session.state_updated.connect(_on_state_updated)
     session.event_received.connect(_on_event_received)
+    session.finished.connect(_on_finished)
     map_view.plot_selected.connect(_on_plot_selected)
-    $MainLayout/MiddleColumn/BuildPanel/SocialHousing.pressed.connect(func(): _prepare_build("social_housing"))
-    $MainLayout/MiddleColumn/BuildPanel/HospitalUpgrade.pressed.connect(func(): _prepare_build("hospital_upgrade"))
-    $MainLayout/MiddleColumn/BuildPanel/CommercialBlock.pressed.connect(func(): _prepare_build("commercial_block"))
+    $MainLayout/MiddleColumn/BuildPanel/Residential.pressed.connect(func(): _prepare_build("social_housing"))
+    $MainLayout/MiddleColumn/BuildPanel/Services.pressed.connect(func(): _prepare_build("hospital_upgrade"))
+    $MainLayout/MiddleColumn/BuildPanel/Commerce.pressed.connect(func(): _prepare_build("commercial_block"))
     $MainLayout/MiddleColumn/BuildPanel/Cancel.pressed.connect(_cancel_build)
     $MainLayout/MiddleColumn/BuildPanel/Build.pressed.connect(_build_selected)
     timeline.advance_pressed.connect(session.advance_month)
@@ -31,18 +33,18 @@ func _on_plot_selected(plot_id: String) -> void:
     selected_plot = plot_id
     session.select_plot(plot_id)
     map_view.set_selected_plot(plot_id)
-    plot_info.text = "Selected plot %s\nChoose a building to preview it here." % plot_id
+    plot_info.text = "Selected plot %s\nChoose a category to preview a building." % plot_id
 
 func _prepare_build(building_id: String) -> void:
     selected_building = building_id
     var details: Dictionary = session.building_details(building_id)
-    build_info.text = "%s\nCost: EUR %.1fM\n%s" % [str(details.get("name", "")), float(details.get("cost", 0.0)) / 1000000.0, str(details.get("description", ""))]
+    build_info.text = "%s · %s\nCost: EUR %.1fM\n%s" % [str(details.get("category", "")), str(details.get("name", "")), float(details.get("cost", 0.0)) / 1000000.0, str(details.get("description", ""))]
     map_view.set_preview(building_id)
 
 func _cancel_build() -> void:
     selected_building = ""
     map_view.set_preview("")
-    build_info.text = "Choose a building to preview it on the selected plot."
+    build_info.text = "Choose a category to preview a building."
 
 func _build_selected() -> void:
     if selected_building.is_empty() or selected_plot.is_empty():
@@ -63,9 +65,13 @@ func _on_state_updated(current: Dictionary) -> void:
     map_view.set_state(current)
     timeline.set_month(int(current.get("month", 0)))
     event_log.set_entries(current.get("events", []))
+    status.text = "Month %d   ·   EUR %.1fM   ·   Population %d" % [int(current.get("month", 0)), float(current.get("budget", 0.0)) / 1000000.0, int(current.get("population", 0))]
 
 func _on_event_received(event: Dictionary) -> void:
     event_log.add_entry(str(event.get("text", "")))
+
+func _on_finished(summary: Dictionary) -> void:
+    plot_info.text = "Five-month slice complete\nPopulation: %d (%+d)\nBuildings: %d\nBudget: EUR %.1fM" % [int(summary.get("population", 0)), int(summary.get("population_change", 0)), int(summary.get("buildings", 0)), float(summary.get("budget", 0.0)) / 1000000.0]
 
 func _render_metrics(current: Dictionary) -> void:
     for child in metric_panel.get_children():
