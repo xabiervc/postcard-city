@@ -1,19 +1,32 @@
 # Godot playable demo
 
-This directory contains the first local playable demo for Postcard City.
+This branch now contains the first complete playable crisis loop for Postcard City.
 
-## Demo loop
+## Playable slice
 
-1. Read the objective and current metrics.
-2. Select and confirm one of two interventions.
-3. Advance months up to the twelve-month slice.
-4. Receive a hospital staffing crisis at month four.
-5. Read three perspective-based testimonies.
-6. Compare the initial and final postcards.
-7. Reach a success or failure message based on livability thresholds.
+1. Begin with a dated postcard and a stylised district map.
+2. Advance to month 1 to reveal a hospital staffing crisis at a named location.
+3. Compare two interventions with explicit cost, benefit and risk.
+4. Confirm one decision through the simulation session adapter.
+5. Advance time to reveal changes in budget, housing, staffing and district health.
+6. Read differentiated reactions from a resident, a healthcare worker and an archivist.
+7. Review the causal event log.
+8. Compare the before and after postcards with the recorded decision.
+9. Reach a provisional outcome after the six-month slice.
 
-The backend is still a deterministic local Godot demo state. It is intentionally not presented as the authoritative Python simulation yet. The next integration step is a versioned JSON gateway so the same scene/UI contract can consume real `RegionState`, events, and traces.
+## Controls and accessibility baseline
 
-## Run
+- The flow is driven by focusable Godot buttons and can be completed with keyboard navigation.
+- The timeline exposes advance and pause controls.
+- The event log and testimony panel provide text alternatives for map and outcome changes.
+- The demo keeps cause and consequence in readable text rather than relying only on colour.
 
-Open `godot/project.godot` in Godot 4.x and run the project.
+## Architecture boundary
+
+The current `SimulationSession` is a deterministic local adapter for this slice. It is not yet the authoritative Python simulation. The intended production boundary is:
+
+```text
+Python simulation core → versioned session adapter → Godot view model → UI
+```
+
+The next integration should replace the local transition rules with the Python gateway without changing the decision, event, map or postcard contracts.
