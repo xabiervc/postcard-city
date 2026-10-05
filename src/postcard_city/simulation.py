@@ -138,9 +138,11 @@ class Simulation:
     def _update_housing(self, profile: dict[str, float]) -> None:
         core = self.state.districts["historic_core"]
         outer = self.state.districts["outer_district"]
+        previous_residential_units = core.residential_units
         converted = int(core.residential_units * profile["conversion_rate"])
         core.residential_units -= converted
         core.short_term_rental_units += converted
+        self._trace("housing_conversion", "historic_core.residential_units", core.residential_units - previous_residential_units, "tourism converts permanent housing into short-term rentals")
         core.tourist_pressure = min(1, self.state.tourism_visitors / self.parameters["tourist_saturation_visitors"])
         long_term_supply = sum(d.residential_units for d in self.state.districts.values()) + self.state.social_housing.occupied_units
         demand = sum(c.population for c in self.state.migration.values()) * (1 + self.migration_parameters["tourism_pressure_penalty"] * core.tourist_pressure)
@@ -150,6 +152,12 @@ class Simulation:
             before = district.average_rent
             district.average_rent *= max(0.995, 1 + 0.003 * pressure)
             self._trace("housing_market", f"{district.id}.average_rent", district.average_rent - before, "housing demand, tourism pressure, and available long-term supply")
+
+        previous_staff = outer.healthcare_staff
+        staffing_drag = self.parameters["healthcare_staff_sensitivity"] * max(0.0, core.tourist_pressure - self.parameters["healthcare_access_neutral"])
+        profile_factor = 1.0 + profile["growth_bonus"]
+        outer.healthcare_staff = max(0.0, min(outer.healthcare_capacity, outer.healthcare_staff - staffing_drag * profile_factor * outer.healthcare_capacity))
+        self._trace("healthcare_staffing", "outer_district.healthcare_staff", outer.healthcare_staff - previous_staff, "tourism pressure and project growth change staffing capacity")
         outer.transport_reliability = max(0, min(1, outer.transport_reliability - 0.004 * core.tourist_pressure + profile["transport_bonus"]))
 
     def _update_social_housing(self) -> None:
@@ -190,14 +198,17 @@ class Simulation:
         staff = sum(d.healthcare_staff for d in self.state.districts.values())
         capacity = sum(d.healthcare_capacity for d in self.state.districts.values())
         ratio = staff / capacity
+        previous_ratio = self.state.metrics.get("healthcare_staffing", ratio)
         population = sum(c.population for c in self.state.migration.values())
         h = self.state.social_housing
         net_cash = (h.cumulative_rent_income - h.cumulative_operating_cost - h.cumulative_maintenance_cost - h.cumulative_arrears) / max(self.state.month, 1)
         self.state.metrics.update({"housing_affordability": max(0, 1 - core.average_rent / 2000), "healthcare_staffing": ratio, "tourism_pressure": core.tourist_pressure, "permanent_population": population, "essential_worker_net_migration": self.state.migration["essential_workers"].net_migration, "public_housing_net_cashflow": net_cash})
+        if record:
+            self._trace("healthcare_staffing", "healthcare_staffing", ratio - previous_ratio, "staffing ratio changes with healthcare capacity and staff")
         shortfall = self.parameters["healthcare_staffing_threshold"] - ratio
         if record and shortfall > 0:
-            self.state.institutional_trust -= 0.2 * shortfall
-            self.state.political_support -= 0.15 * shortfall
+            self.state.institutional_trust -= self.parameters["healthcare_trust_penalty_scale"] * shortfall
+            self.state.political_support -= self.parameters["healthcare_support_penalty_scale"] * shortfall
 
     def _resolve_events(self) -> None:
         for event in self.scenario["events"]:
