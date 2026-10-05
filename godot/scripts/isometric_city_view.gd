@@ -10,6 +10,7 @@ const ORIGIN := Vector2(360.0, 82.0)
 
 var state: Dictionary = {}
 var hovered_plot: String = ""
+var selected_plot: String = ""
 var plots: Dictionary = {}
 var preview_building: String = ""
 var pulse: float = 0.0
@@ -20,6 +21,11 @@ func _ready() -> void:
 
 func set_state(next_state: Dictionary) -> void:
     state = next_state
+    selected_plot = str(state.get("selected_plot", ""))
+    queue_redraw()
+
+func set_selected_plot(plot_id: String) -> void:
+    selected_plot = plot_id
     queue_redraw()
 
 func set_preview(building_id: String) -> void:
@@ -35,7 +41,7 @@ func _gui_input(event: InputEvent) -> void:
         hovered_plot = _plot_at(event.position)
         queue_redraw()
     elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-        var plot_id := _plot_at(event.position)
+        var plot_id: String = _plot_at(event.position)
         if not plot_id.is_empty():
             plot_selected.emit(plot_id)
             accept_event()
@@ -65,19 +71,18 @@ func _draw() -> void:
         _draw_building(_plot_center(hovered_plot), preview_building, Color(1, 1, 1, 0.35), true)
 
 func _plot_center(plot_id: String) -> Vector2:
-    var parts := plot_id.split("_")
+    var parts: PackedStringArray = plot_id.split("_")
     return _iso_point(int(parts[0]), int(parts[1]))
 
 func _draw_plot(x: int, y: int) -> void:
-    var plot_id := "%d_%d" % [x, y]
-    var center := _iso_point(x, y)
-    var polygon := _tile_polygon(center)
+    var plot_id: String = "%d_%d" % [x, y]
+    var center: Vector2 = _iso_point(x, y)
+    var polygon: PackedVector2Array = _tile_polygon(center)
     plots[plot_id] = _polygon_rect(polygon)
-    var selected: String = str(state.get("selected_plot", ""))
-    var tile_color := Color("31505a") if (x + y) % 2 == 0 else Color("294650")
+    var tile_color: Color = Color("31505a") if (x + y) % 2 == 0 else Color("294650")
     if plot_id == hovered_plot:
         tile_color = Color("56747a")
-    if plot_id == selected:
+    if plot_id == selected_plot:
         tile_color = Color("c39b5b")
     draw_colored_polygon(polygon, tile_color)
     draw_polyline(PackedVector2Array([polygon[0], polygon[1], polygon[2], polygon[3], polygon[0]]), Color("91a9a5"), 1.5)
@@ -86,11 +91,11 @@ func _draw_plot(x: int, y: int) -> void:
         _draw_building(center, building_id, Color.WHITE, false)
 
 func _polygon_rect(polygon: PackedVector2Array) -> Rect2:
-    var min_x := polygon[0].x
-    var max_x := polygon[0].x
-    var min_y := polygon[0].y
-    var max_y := polygon[0].y
-    for point in polygon:
+    var min_x: float = polygon[0].x
+    var max_x: float = polygon[0].x
+    var min_y: float = polygon[0].y
+    var max_y: float = polygon[0].y
+    for point: Vector2 in polygon:
         min_x = min(min_x, point.x)
         max_x = max(max_x, point.x)
         min_y = min(min_y, point.y)
@@ -105,13 +110,13 @@ func _building_at_plot(plot_id: String) -> String:
     return ""
 
 func _draw_building(center: Vector2, building_id: String, tint: Color, preview: bool) -> void:
-    var height := 26.0
-    var width := 34.0
-    var base := center + Vector2(0, -8)
-    var palette := {"social_housing": Color("8ab3a3"), "hospital_upgrade": Color("d77770"), "commercial_block": Color("d7aa63"), "heritage": Color("b78c59")}
+    var height: float = 26.0
+    var width: float = 34.0
+    var base: Vector2 = center + Vector2(0, -8)
+    var palette: Dictionary = {"social_housing": Color("8ab3a3"), "hospital_upgrade": Color("d77770"), "commercial_block": Color("d7aa63"), "heritage": Color("b78c59")}
     var building_color: Color = palette.get(building_id, Color("9aa6ad"))
     building_color = building_color * tint
-    var body := PackedVector2Array([base + Vector2(-width, 0), base + Vector2(0, 13), base + Vector2(width, 0), base + Vector2(0, -13)])
+    var body: PackedVector2Array = PackedVector2Array([base + Vector2(-width, 0), base + Vector2(0, 13), base + Vector2(width, 0), base + Vector2(0, -13)])
     draw_colored_polygon(body, building_color)
     draw_colored_polygon(PackedVector2Array([base + Vector2(-width, 0), base + Vector2(0, -height), base + Vector2(0, -13), base + Vector2(-width, 0)]), building_color.lightened(0.12))
     draw_colored_polygon(PackedVector2Array([base + Vector2(0, -height), base + Vector2(width, 0), base + Vector2(0, 13), base + Vector2(0, -13)]), building_color.darkened(0.10))
@@ -122,9 +127,9 @@ func _draw_building(center: Vector2, building_id: String, tint: Color, preview: 
         draw_polyline(PackedVector2Array([base + Vector2(-width, 0), base + Vector2(0, -height), base + Vector2(width, 0)]), Color("ffffff"), 2.0)
 
 func _draw_population_activity() -> void:
-    var population := int(state.get("population", 0))
-    var count := clamp(4 + population / 4500, 4, 10)
-    for index in range(count):
-        var angle := pulse * 0.25 + float(index) * 1.7
-        var point := ORIGIN + Vector2(cos(angle) * 170.0, 145.0 + sin(angle * 1.3) * 35.0)
+    var population: int = int(state.get("population", 0))
+    var count: int = clamp(4 + population / 4500, 4, 10)
+    for index: int in range(count):
+        var angle: float = pulse * 0.25 + float(index) * 1.7
+        var point: Vector2 = ORIGIN + Vector2(cos(angle) * 170.0, 145.0 + sin(angle * 1.3) * 35.0)
         draw_circle(point, 3.0, Color("f4d9a1"))
