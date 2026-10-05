@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "postcard-city/event.schema.json",
+  "title": "Postcard City Event",
+  "type": "object",
+  "required": ["id", "title_key", "trigger", "options"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "title_key": { "type": "string", "minLength": 1 },
+    "trigger": { "type": "object" },
+    "options": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["id", "label_key", "effects"],
+        "properties": {
+          "id": { "type": "string" },
+          "label_key": { "type": "string" },
+          "effects": { "type": "object" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

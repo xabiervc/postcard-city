@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "postcard-city/decision.schema.json",
+  "title": "Postcard City Decision",
+  "type": "object",
+  "required": ["id", "title_key", "options"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "title_key": { "type": "string", "minLength": 1 },
+    "context_key": { "type": "string" },
+    "options": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["id", "label_key", "effects"],
+        "properties": {
+          "id": { "type": "string" },
+          "label_key": { "type": "string" },
+          "effects": { "type": "object" },
+          "requirements": { "type": "object" },
+          "uncertainty": { "type": "object" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

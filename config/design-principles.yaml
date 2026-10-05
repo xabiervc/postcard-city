@@ -1,0 +1,19 @@
+project: postcard-city
+language: en
+principles:
+  - protect_the_core_fantasy
+  - make_causes_inspectable
+  - prefer_systemic_consequences
+  - avoid_moral_binary_design
+  - keep_procedural_cases_plausible
+  - scale_complexity_without_removing_identity
+  - accessibility_by_default
+  - localization_from_day_one
+  - deterministic_reproducible_simulation
+  - quality_over_scope
+quality_target:
+  awards:
+    - The Game Awards
+    - D.I.C.E. Awards
+    - BAFTA Games Awards
+    - Game Developers Choice Awards

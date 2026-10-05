@@ -1,0 +1,31 @@
+project: postcard-city
+slice: the-overheated-destination
+complexity: standard
+region:
+  template: coastal-historic-metropolitan
+  districts: 6
+systems:
+  tourism: true
+  housing: true
+  employment: true
+  transport: true
+  healthcare: true
+  budget: true
+  election: true
+  media: true
+  opposition: true
+  corruption: false
+  deep_industry: false
+  terrorism: false
+  deep_crime: false
+content:
+  major_projects: 1
+  parties: 3
+  media_outlets: 3
+  journalists: 1
+  whistleblowers: 1
+acceptance:
+  minimum_viable_strategies: 2
+  minimum_meaningful_outcomes: 2
+  deterministic_seed_required: true
+  localization_keys_required: true

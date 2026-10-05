@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "postcard-city/region.schema.json",
+  "title": "Postcard City Region",
+  "type": "object",
+  "required": ["id", "name", "template", "population", "systems"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "name": { "type": "string", "minLength": 1 },
+    "template": { "type": "string", "minLength": 1 },
+    "population": { "type": "integer", "minimum": 1 },
+    "systems": {
+      "type": "object",
+      "required": ["tourism", "housing", "transport", "healthcare", "economy"],
+      "properties": {
+        "tourism": { "type": "string", "enum": ["low", "medium", "high", "extreme"] },
+        "housing": { "type": "string", "enum": ["stable", "pressured", "critical"] },
+        "transport": { "type": "string", "enum": ["reliable", "strained", "fragmented"] },
+        "healthcare": { "type": "string", "enum": ["stable", "strained", "critical"] },
+        "economy": { "type": "string", "enum": ["diverse", "specialized", "dependent", "declining"] }
+      }
+    }
+  },
+  "additionalProperties": false
+}
