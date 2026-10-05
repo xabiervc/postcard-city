@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "postcard-city/scenario.schema.json",
+  "title": "Postcard City Scenario",
+  "type": "object",
+  "required": ["schema_version", "id", "title", "default_seed", "region", "initial_state", "parameters", "project_profiles", "decisions", "events"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "id": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+    "title": {"type": "string", "minLength": 1},
+    "default_seed": {"type": "integer"},
+    "region": {
+      "type": "object",
+      "required": ["id", "name", "template", "districts"],
+      "properties": {
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "template": {"type": "string"},
+        "districts": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": ["id", "population", "housing_units", "residential_units", "short_term_rental_units", "average_rent", "jobs", "healthcare_capacity", "healthcare_staff", "transport_reliability"],
+            "properties": {
+              "id": {"type": "string"},
+              "population": {"type": "integer", "minimum": 0},
+              "housing_units": {"type": "integer", "minimum": 0},
+              "residential_units": {"type": "integer", "minimum": 0},
+              "short_term_rental_units": {"type": "integer", "minimum": 0},
+              "average_rent": {"type": "number", "minimum": 0},
+              "jobs": {"type": "integer", "minimum": 0},
+              "healthcare_capacity": {"type": "integer", "minimum": 1},
+              "healthcare_staff": {"type": "number", "minimum": 0},
+              "transport_reliability": {"type": "number", "minimum": 0, "maximum": 1}
+            },
+            "additionalProperties": false
+          }
+        },
+        "initial_conditions": {"type": "object"}
+      },
+      "additionalProperties": false
+    },
+    "initial_state": {
+      "type": "object",
+      "required": ["budget", "tourism_visitors", "institutional_trust", "political_support", "economic_diversity", "project_status"],
+      "properties": {
+        "budget": {"type": "number"},
+        "tourism_visitors": {"type": "number", "minimum": 0},
+        "institutional_trust": {"type": "number", "minimum": 0, "maximum": 1},
+        "political_support": {"type": "number", "minimum": 0, "maximum": 1},
+        "economic_diversity": {"type": "number", "minimum": 0, "maximum": 1},
+        "project_status": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "parameters": {
+      "type": "object",
+      "required": ["monthly_base_tourist_growth", "tourist_spend", "tourism_tax_rate", "monthly_public_cost", "healthcare_staffing_threshold", "tourist_saturation_visitors", "healthcare_staff_sensitivity", "healthcare_access_neutral", "healthcare_trust_penalty_scale", "healthcare_support_penalty_scale"],
+      "additionalProperties": {"type": "number"}
+    },
+    "project_profiles": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["growth_bonus", "conversion_rate", "transport_bonus"],
+        "additionalProperties": {"type": "number"}
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "title_key", "options"],
+        "properties": {
+          "id": {"type": "string"},
+          "title_key": {"type": "string"},
+          "options": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "required": ["id", "label_key", "effects"],
+              "properties": {
+                "id": {"type": "string"},
+                "label_key": {"type": "string"},
+                "effects": {
+                  "type": "object",
+                  "properties": {
+                    "project_status": {"type": "string"},
+                    "budget_delta": {"type": "number"},
+                    "tourism_multiplier": {"type": "number", "exclusiveMinimum": 0},
+                    "political_support_delta": {"type": "number"},
+                    "institutional_trust_delta": {"type": "number"},
+                    "economic_diversity_delta": {"type": "number"},
+                    "reason": {"type": "string"}
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "when", "effects", "reason"],
+        "properties": {
+          "id": {"type": "string"},
+          "when": {"type": "object"},
+          "effects": {"type": "object"},
+          "reason": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

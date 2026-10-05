@@ -1,6 +1,6 @@
 # License
 
-Copyright (c) 2026 Xabier Vicente.
+Copyright (c) 2026 xabiervc.
 
 All rights reserved.
 

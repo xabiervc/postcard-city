@@ -3,27 +3,29 @@ slice: the-overheated-destination
 complexity: standard
 region:
   template: coastal-historic-metropolitan
-  districts: 6
+  districts: 2
+  note: The prototype models two aggregate districts; the visual slice may subdivide them later.
 systems:
   tourism: true
   housing: true
-  employment: true
+  employment: false
   transport: true
   healthcare: true
   budget: true
-  election: true
-  media: true
-  opposition: true
+  election: false
+  media: false
+  opposition: false
   corruption: false
   deep_industry: false
   terrorism: false
   deep_crime: false
-content:
+target_slice_scope:
   major_projects: 1
   parties: 3
   media_outlets: 3
   journalists: 1
   whistleblowers: 1
+  election: true
 acceptance:
   minimum_viable_strategies: 2
   minimum_meaningful_outcomes: 2

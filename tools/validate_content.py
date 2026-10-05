@@ -2,8 +2,7 @@ from pathlib import Path
 
 from postcard_city.scenario import load_scenario
 
-
 if __name__ == "__main__":
-    root = Path(__file__).parents[1]
-    scenario = load_scenario(root / "data/scenarios/the-overheated-destination.json")
-    print(f"Validated scenario: {scenario['id']}")
+    for path in sorted((Path(__file__).resolve().parents[1] / "data" / "scenarios").glob("*.json")):
+        scenario = load_scenario(path)
+        print(f"Validated scenario: {scenario['id']}")

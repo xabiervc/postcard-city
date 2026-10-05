@@ -42,7 +42,7 @@ class DistrictState:
     average_rent: float
     jobs: int
     healthcare_capacity: int
-    healthcare_staff: int
+    healthcare_staff: float
     transport_reliability: float
     tourist_pressure: float = 0.0
 
@@ -84,7 +84,7 @@ class RegionState:
                     "average_rent": round(value.average_rent, 4),
                     "jobs": value.jobs,
                     "healthcare_capacity": value.healthcare_capacity,
-                    "healthcare_staff": value.healthcare_staff,
+                    "healthcare_staff": round(value.healthcare_staff, 4),
                     "transport_reliability": round(value.transport_reliability, 4),
                     "tourist_pressure": round(value.tourist_pressure, 4),
                 }
