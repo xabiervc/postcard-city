@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "id": "the-overheated-destination",
   "title": "The Overheated Destination",
   "default_seed": 4821,
@@ -15,27 +15,10 @@
   },
   "initial_state": {"budget": 80000000, "tourism_visitors": 420000, "institutional_trust": 0.62, "political_support": 0.54, "economic_diversity": 0.34, "project_status": "proposed"},
   "parameters": {"monthly_base_tourist_growth": 0.018, "tourist_spend": 115.0, "tourism_tax_rate": 0.08, "monthly_public_cost": 2000000, "healthcare_staffing_threshold": 0.75, "tourist_saturation_visitors": 900000, "healthcare_staff_sensitivity": 0.02, "healthcare_access_neutral": 0.5, "healthcare_trust_penalty_scale": 0.2, "healthcare_support_penalty_scale": 0.15},
-  "project_profiles": {
-    "proposed": {"growth_bonus": 0.0, "conversion_rate": 0.001, "transport_bonus": 0.0},
-    "approved": {"growth_bonus": 0.025, "conversion_rate": 0.003, "transport_bonus": 0.0},
-    "rejected": {"growth_bonus": 0.0, "conversion_rate": 0.001, "transport_bonus": 0.0},
-    "safeguarded": {"growth_bonus": 0.012, "conversion_rate": 0.0005, "transport_bonus": 0.002},
-    "under_audit": {"growth_bonus": -0.004, "conversion_rate": 0.001, "transport_bonus": 0.0}
-  },
-  "decisions": [
-    {
-      "id": "aurora_leisure_proposal",
-      "title_key": "decision.aurora.title",
-      "options": [
-        {"id": "approve", "label_key": "decision.aurora.approve", "effects": {"project_status": "approved", "budget_delta": -18000000, "tourism_multiplier": 1.08, "political_support_delta": 0.04, "reason": "public infrastructure commitment for the unconditional proposal"}},
-        {"id": "reject", "label_key": "decision.aurora.reject", "effects": {"project_status": "rejected", "political_support_delta": -0.03, "institutional_trust_delta": 0.02, "reason": "rejection protects institutional autonomy but disappoints investors"}},
-        {"id": "renegotiate", "label_key": "decision.aurora.renegotiate", "effects": {"project_status": "safeguarded", "budget_delta": -8000000, "tourism_multiplier": 1.04, "economic_diversity_delta": 0.04, "institutional_trust_delta": 0.03, "reason": "safeguards trade immediate growth for public conditions"}},
-        {"id": "audit", "label_key": "decision.aurora.audit", "effects": {"project_status": "under_audit", "budget_delta": -2000000, "institutional_trust_delta": 0.05, "reason": "independent review increases confidence but delays the project"}}
-      ]
-    }
-  ],
-  "events": [
-    {"id": "aurora_financing_warning", "when": {"project_status": "approved", "month": 6}, "effects": {"institutional_trust_delta": -0.04}, "reason": "project financing appears less secure than publicly claimed"},
-    {"id": "resident_housing_protest", "when": {"metric_gt": {"name": "tourism_pressure", "value": 0.72}, "month_multiple_of": 6}, "effects": {"political_support_delta": -0.03}, "reason": "housing pressure triggers organized resident opposition"}
-  ]
+  "project_profiles": {"proposed": {"growth_bonus": 0.0, "conversion_rate": 0.001, "transport_bonus": 0.0}, "approved": {"growth_bonus": 0.025, "conversion_rate": 0.003, "transport_bonus": 0.0}, "rejected": {"growth_bonus": 0.0, "conversion_rate": 0.001, "transport_bonus": 0.0}, "safeguarded": {"growth_bonus": 0.012, "conversion_rate": 0.0005, "transport_bonus": 0.002}, "under_audit": {"growth_bonus": -0.004, "conversion_rate": 0.001, "transport_bonus": 0.0}},
+  "decisions": [{"id": "aurora_leisure_proposal", "title_key": "decision.aurora.title", "options": [{"id": "approve", "label_key": "decision.aurora.approve", "effects": {"project_status": "approved", "budget_delta": -18000000, "tourism_multiplier": 1.08, "political_support_delta": 0.04, "reason": "public infrastructure commitment for the unconditional proposal"}}, {"id": "reject", "label_key": "decision.aurora.reject", "effects": {"project_status": "rejected", "political_support_delta": -0.03, "institutional_trust_delta": 0.02, "reason": "rejection protects institutional autonomy but disappoints investors"}}, {"id": "renegotiate", "label_key": "decision.aurora.renegotiate", "effects": {"project_status": "safeguarded", "budget_delta": -8000000, "tourism_multiplier": 1.04, "economic_diversity_delta": 0.04, "institutional_trust_delta": 0.03, "reason": "safeguards trade immediate growth for public conditions"}}, {"id": "audit", "label_key": "decision.aurora.audit", "effects": {"project_status": "under_audit", "budget_delta": -2000000, "institutional_trust_delta": 0.05, "reason": "independent review increases confidence but delays the project"}}]}],
+  "events": [{"id": "aurora_financing_warning", "when": {"project_status": "approved", "month": 6}, "effects": {"institutional_trust_delta": -0.04}, "reason": "project financing appears less secure than publicly claimed"}, {"id": "resident_housing_protest", "when": {"metric_gt": {"name": "tourism_pressure", "value": 0.72}, "month_multiple_of": 6}, "effects": {"political_support_delta": -0.03}, "reason": "housing pressure triggers organized resident opposition"}],
+  "parcels": [{"id": "parcel_a", "district_id": "outer_district", "area": 12.0, "market_value": 12000000, "public_control": true, "tenure": "available"}, {"id": "parcel_b", "district_id": "outer_district", "area": 8.0, "market_value": 8000000, "public_control": true, "tenure": "available"}],
+  "migration": {"cohorts": [{"id": "essential_workers", "population": 42000, "mobility": 0.08, "housing_sensitivity": 0.9, "job_sensitivity": 0.8, "service_sensitivity": 0.9}, {"id": "families", "population": 150000, "mobility": 0.035, "housing_sensitivity": 0.85, "job_sensitivity": 0.65, "service_sensitivity": 0.75}, {"id": "students", "population": 28000, "mobility": 0.12, "housing_sensitivity": 0.7, "job_sensitivity": 0.5, "service_sensitivity": 0.35}, {"id": "retirees", "population": 60000, "mobility": 0.02, "housing_sensitivity": 0.45, "job_sensitivity": 0.1, "service_sensitivity": 0.8}], "parameters": {"base_arrival_rate": 0.004, "base_departure_rate": 0.003, "tourism_pressure_penalty": 0.25, "housing_affordability_weight": 0.5, "jobs_weight": 0.25, "services_weight": 0.25}},
+  "housing": {"social_housing": {"units": 0, "construction_progress": 0.0, "construction_months": 24, "monthly_operating_cost": 120000, "monthly_maintenance_cost": 80000, "monthly_target_rent": 550, "arrears_rate": 0.08, "essential_worker_share": 0.35}, "parameters": {"construction_cost_per_unit": 180000, "rent_pressure_weight": 0.25, "tourism_demand_weight": 0.2, "migration_demand_weight": 0.15, "supply_relief_weight": 0.4}}
 }

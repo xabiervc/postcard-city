@@ -6,16 +6,12 @@ from typing import Any
 
 @dataclass(frozen=True)
 class Decision:
-    """A player decision applied at the start of a simulation month."""
-
     decision_id: str
     option_id: str
 
 
 @dataclass(frozen=True)
 class TraceEntry:
-    """A player-readable explanation of a state transition."""
-
     month: int
     source: str
     target: str
@@ -23,13 +19,7 @@ class TraceEntry:
     reason: str
 
     def as_dict(self) -> dict[str, Any]:
-        return {
-            "month": self.month,
-            "source": self.source,
-            "target": self.target,
-            "amount": round(self.amount, 6),
-            "reason": self.reason,
-        }
+        return {"month": self.month, "source": self.source, "target": self.target, "amount": round(self.amount, 6), "reason": self.reason}
 
 
 @dataclass
@@ -48,6 +38,41 @@ class DistrictState:
 
 
 @dataclass
+class ParcelState:
+    id: str
+    district_id: str
+    area: float
+    market_value: float
+    public_control: bool
+    tenure: str
+
+
+@dataclass
+class CohortState:
+    id: str
+    population: float
+    mobility: float
+    housing_sensitivity: float
+    job_sensitivity: float
+    service_sensitivity: float
+    net_migration: float = 0.0
+
+
+@dataclass
+class SocialHousingState:
+    units: int
+    construction_progress: float
+    construction_months: int
+    monthly_operating_cost: float
+    monthly_maintenance_cost: float
+    monthly_target_rent: float
+    arrears_rate: float
+    essential_worker_share: float
+    occupied_units: int = 0
+    cumulative_arrears: float = 0.0
+
+
+@dataclass
 class RegionState:
     seed: int
     month: int
@@ -58,6 +83,9 @@ class RegionState:
     political_support: float
     economic_diversity: float
     districts: dict[str, DistrictState]
+    parcels: dict[str, ParcelState]
+    migration: dict[str, CohortState]
+    social_housing: SocialHousingState
     project_status: str = "proposed"
     decision_history: list[Decision] = field(default_factory=list)
     event_history: list[str] = field(default_factory=list)
@@ -65,33 +93,4 @@ class RegionState:
     traces: list[TraceEntry] = field(default_factory=list)
 
     def snapshot(self) -> dict[str, Any]:
-        return {
-            "seed": self.seed,
-            "month": self.month,
-            "budget": round(self.budget, 4),
-            "tourism_visitors": round(self.tourism_visitors, 4),
-            "tourism_revenue": round(self.tourism_revenue, 4),
-            "institutional_trust": round(self.institutional_trust, 4),
-            "political_support": round(self.political_support, 4),
-            "economic_diversity": round(self.economic_diversity, 4),
-            "project_status": self.project_status,
-            "districts": {
-                key: {
-                    "population": value.population,
-                    "housing_units": value.housing_units,
-                    "residential_units": value.residential_units,
-                    "short_term_rental_units": value.short_term_rental_units,
-                    "average_rent": round(value.average_rent, 4),
-                    "jobs": value.jobs,
-                    "healthcare_capacity": value.healthcare_capacity,
-                    "healthcare_staff": round(value.healthcare_staff, 4),
-                    "transport_reliability": round(value.transport_reliability, 4),
-                    "tourist_pressure": round(value.tourist_pressure, 4),
-                }
-                for key, value in sorted(self.districts.items())
-            },
-            "decision_history": [decision.__dict__ for decision in self.decision_history],
-            "event_history": self.event_history[:],
-            "metrics": {key: round(value, 4) for key, value in sorted(self.metrics.items())},
-            "traces": [trace.as_dict() for trace in self.traces],
-        }
+        return {"seed": self.seed, "month": self.month, "budget": round(self.budget, 4), "tourism_visitors": round(self.tourism_visitors, 4), "tourism_revenue": round(self.tourism_revenue, 4), "institutional_trust": round(self.institutional_trust, 4), "political_support": round(self.political_support, 4), "economic_diversity": round(self.economic_diversity, 4), "project_status": self.project_status, "districts": {k: vars(v) for k, v in sorted(self.districts.items())}, "parcels": {k: vars(v) for k, v in sorted(self.parcels.items())}, "migration": {k: vars(v) for k, v in sorted(self.migration.items())}, "social_housing": vars(self.social_housing), "decision_history": [vars(d) for d in self.decision_history], "event_history": self.event_history[:], "metrics": {k: round(v, 6) for k, v in sorted(self.metrics.items())}, "traces": [t.as_dict() for t in self.traces]}
