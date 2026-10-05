@@ -1,18 +1,18 @@
-# Godot vertical slice shell
+# Godot playable demo
 
-This directory contains the first Godot 4 presentation shell for Postcard City.
+This directory contains the first local playable demo for Postcard City.
 
-## Current scope
+## Demo loop
 
-- Godot scene tree and application shell.
-- Demo simulation session with deterministic placeholder state.
-- Metric cards.
-- Event log.
-- Timeline control.
-- Two demo interventions.
-- Before/after postcard comparison.
+1. Read the objective and current metrics.
+2. Select and confirm one of two interventions.
+3. Advance months up to the twelve-month slice.
+4. Receive a hospital staffing crisis at month four.
+5. Read three perspective-based testimonies.
+6. Compare the initial and final postcards.
+7. Reach a success or failure message based on livability thresholds.
 
-The demo session is intentionally local to Godot and does not yet call the Python simulation. The next integration step should replace `SimulationSession`'s placeholder methods with a versioned JSON gateway while keeping the scene and UI contracts unchanged.
+The backend is still a deterministic local Godot demo state. It is intentionally not presented as the authoritative Python simulation yet. The next integration step is a versioned JSON gateway so the same scene/UI contract can consume real `RegionState`, events, and traces.
 
 ## Run
 
