@@ -11,7 +11,7 @@ def run_replay(seed):
     simulation = Simulation(load_scenario(SCENARIO_PATH), seed=seed)
     outputs = []
     for _ in range(3):
-        result = simulation.step()
+        result = simulation.run_year()
         outputs.append(result)
     return json.loads(json.dumps(outputs, sort_keys=True, default=str))
 
