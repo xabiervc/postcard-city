@@ -19,9 +19,9 @@ Possible entries include:
 - corruption capture of key institutions;
 - assassination attempt or threat to public officials, handled at a high level;
 - regional secession or jurisdictional dispute;
-- emergency succession and continuity-of-government crisis.
+- emergency succession and continuity of government crisis.
 
-The player manages lawful succession, public communication, institutional coordination, civil liberties, public safety, international support, and restoration of legitimacy. The game never provides operational instructions for organising a coup.
+The player manages lawful succession, public communication, institutional coordination, civil liberties, public safety, international support, and restoration of legitimacy. The game does not provide operational instructions for organising a coup.
 
 ## Nuclear and radiological crises
 
@@ -64,4 +64,4 @@ The simulation distinguishes:
 
 ## Safety and ethics
 
-No gore is required. No protected group is targeted through hidden rules. No scenario rewards atrocities or treats civilian harm as spectacle. The player faces difficult governance trade-offs, but the game does not provide operational guidance for violence, weapons, coups, or biological attacks.
+No gore is required. No protected group is targeted through hidden rules. No scenario rewards atrocities or treats civilian harm as spectacle. The game does not provide operational instructions for violence, weapons, coups, or biological attacks. The player faces difficult governance trade-offs without receiving tactical guidance.
