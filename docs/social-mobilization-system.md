@@ -12,15 +12,16 @@ The system models collective action, public grievances, organized protest, labor
 Possible forms include:
 
 - petitions and civic campaigns;
-- public meetings and marches;
-- strikes and workplace action;
-- boycotts and consumer campaigns;
+- neighbourhood demonstrations and public marches;
+- labour strikes and workplace action;
+- consumer boycotts;
+- tenant campaigns and housing organizing;
 - sit-ins and symbolic occupations;
 - online coordination and information campaigns;
 - mutual-aid and neighborhood organizing;
 - civil disobedience represented at a high level.
 
-The simulation does not provide operational guidance for evading law enforcement, attacking people, damaging property, or organizing violence.
+Movements may involve unions, opposition alliances, civic groups, tenant associations, informal networks, and cross-community coalitions. The simulation does not provide operational guidance for evading law enforcement, attacking people, damaging property, or organizing violence.
 
 ## Causes and triggers
 
@@ -41,19 +42,19 @@ Triggers interact with prior trust, organizational capacity, perceived fairness,
 
 Each movement has visible and latent demands, leadership or network structure, constituency, coalition partners, internal factions, tolerance for disruption, and willingness to negotiate. Demands may evolve as the government responds.
 
-The player can recognize demands, offer reforms, appoint mediators, open hearings, publish evidence, call elections or referenda where lawful, adjust budgets, or refuse concessions. Every choice has fiscal, institutional, and legitimacy effects.
+The player can recognize demands, negotiate with representatives, offer reforms, appoint mediators, convene citizens’ assemblies, open hearings, publish evidence, call elections or referenda where lawful, adjust budgets, provide compensation, or refuse concessions. Every choice has fiscal, institutional, and legitimacy effects.
 
 ## Negotiation and de-escalation
 
 The system models good-faith negotiation through recognized representatives, independent mediation, transparent timetables, public commitments, and reviewable agreements. De-escalation can include restoring lawful assembly access, separating public-safety planning from political retaliation, communicating clear constraints, and providing nonviolent routes for grievances.
 
-The response model distinguishes proportionate public-safety measures from collective punishment. Any restriction on assembly must have a stated legal basis, a narrow scope, a time limit, an appeal route, and independent oversight. Excessive or discriminatory responses increase fear, polarization, movement recruitment, and long-term legitimacy loss.
+The response model distinguishes proportionate public-safety measures from collective punishment. Any restriction on assembly must have a stated legal basis, a narrow scope, a time limit, an appeal route, and independent oversight. Excessive or discriminatory responses increase fear, polarisation, movement recruitment, and long-term legitimacy loss.
 
-## Escalation and outcomes
+## Consequences and outcomes
 
-Mobilization may de-escalate, fragment, achieve negotiated reform, persist through strikes or demonstrations, or produce a broader constitutional crisis. Outcomes depend on responsiveness, perceived fairness, economic conditions, information quality, organizational cohesion, and external shocks.
+Mobilization may de-escalate, fragment, achieve negotiated institutional reforms, persist through strikes or demonstrations, or produce a broader constitutional crisis. Outcomes depend on responsiveness, perceived fairness, economic conditions, information quality, organizational cohesion, and external shocks.
 
-The model records immediate disruption separately from long-term effects on trust, civic participation, institutional legitimacy, social cohesion, and reform durability.
+The model records immediate disruption separately from long-term effects. It tracks lost workdays, essential-service availability, household income, public safety, trust, civic participation, institutional legitimacy, social cohesion, and reform durability.
 
 ## Complexity levels
 
@@ -63,6 +64,10 @@ The model records immediate disruption separately from long-term effects on trus
 | Standard | Strikes, boycotts, coalition campaigns, and negotiated reforms |
 | Advanced | Sustained protest waves, polarization, misinformation, and contested legitimacy |
 | Expert | Compound mobilization during economic, constitutional, humanitarian, or security crises |
+
+## Rights constraints
+
+The simulation protects lawful assembly, expression, association, due process, equal treatment, and access to independent review. Restrictions must be proportionate, time-limited, legally grounded, and auditable. The model distinguishes public-safety planning from political retaliation and does not reward collective punishment.
 
 ## Safety and ethics
 
