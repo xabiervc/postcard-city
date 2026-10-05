@@ -1,10 +1,11 @@
 extends Node
 
-var shell_scene := preload("res://scenes/app/game_shell.tscn")
-var current_shell: Node
+var game_opened: bool = false
 
 func open_game() -> void:
-    if current_shell:
-        current_shell.queue_free()
-    current_shell = shell_scene.instantiate()
-    get_tree().root.add_child(current_shell)
+    if game_opened:
+        return
+    game_opened = true
+    var game_scene: PackedScene = preload("res://scenes/screens/gameplay.tscn")
+    var child: Node = game_scene.instantiate()
+    add_child.call_deferred(child)
