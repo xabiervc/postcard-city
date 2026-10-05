@@ -70,14 +70,25 @@ func _on_decision_applied(decision: Dictionary) -> void:
 func _on_outcome_changed(outcome: Dictionary) -> void:
     tradeoff.text = str(outcome.get("text", ""))
 
+func _make_metric_card(title: String, value: String) -> PanelContainer:
+    var card := PanelContainer.new()
+    var content := VBoxContainer.new()
+    var name_label := Label.new()
+    var value_label := Label.new()
+    name_label.text = title
+    value_label.text = value
+    value_label.add_theme_font_size_override("font_size", 20)
+    content.add_child(name_label)
+    content.add_child(value_label)
+    card.add_child(content)
+    return card
+
 func _render_metrics(current: Dictionary) -> void:
     for child in metric_panel.get_children():
         child.queue_free()
     var metrics: Array[Array] = [["Budget", "EUR %.1fM" % (float(current.get("budget", 0.0)) / 1000000.0)], ["Tourism pressure", "%.0f%%" % (float(current.get("tourism_pressure", 0.0)) * 100.0)], ["Housing affordability", "%.0f%%" % (float(current.get("housing_affordability", 0.0)) * 100.0)], ["Healthcare staffing", "%.0f%%" % (float(current.get("healthcare_staffing", 0.0)) * 100.0)], ["District health", "%.0f%%" % (float(current.get("district_health", 0.0)) * 100.0)]]
     for item: Array in metrics:
-        var card: Control = preload("res://scenes/ui/metric_card.tscn").instantiate()
-        metric_panel.add_child(card)
-        card.set_metric(str(item[0]), str(item[1]))
+        metric_panel.add_child(_make_metric_card(str(item[0]), str(item[1])))
 
 func _show_postcard_comparison() -> void:
     postcard_compare.show_comparison(session.postcard_comparison())
