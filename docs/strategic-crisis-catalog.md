@@ -34,7 +34,7 @@ Possible entries include:
 - long-term exclusion zone and compensation crisis;
 - geopolitical nuclear escalation represented through uncertainty and civilian consequences.
 
-These scenarios remain high-level. They model detection, trusted communication, protective action, evacuation, shelter, health monitoring, decontamination as a public-service process, land-use restrictions, compensation, and recovery. They do not describe weapons, enrichment, attack methods, targeting, or evasion.
+These scenarios remain high-level. They model detection, trusted communication, protective action, evacuation, shelter, health monitoring, decontamination as a public-service process, land-use restrictions, compensation, and recovery. The catalog does not describe weapons, enrichment, attack methods, targeting, or evasion.
 
 ## Complexity levels
 
