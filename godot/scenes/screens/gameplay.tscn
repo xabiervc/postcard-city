@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource path="res://scripts/gameplay.gd" type="Script" id="1"]
 [ext_resource path="res://scenes/ui/event_log.tscn" type="PackedScene" id="3"]
@@ -6,6 +6,7 @@
 [ext_resource path="res://scenes/postcard/postcard_compare.tscn" type="PackedScene" id="5"]
 [ext_resource path="res://scenes/ui/testimony_panel.tscn" type="PackedScene" id="6"]
 [ext_resource path="res://scenes/ui/crisis_panel.tscn" type="PackedScene" id="7"]
+[ext_resource path="res://scenes/ui/map_view.tscn" type="PackedScene" id="8"]
 
 [node name="Gameplay" type="Control"]
 layout_mode = 3
@@ -55,7 +56,7 @@ text = "The Overheated Destination"
 [node name="Objective" type="Label" parent="MainLayout/LeftColumn"]
 layout_mode = 2
 autowrap_mode = 2
-text = "Objective: keep the historic core livable while responding to Aurora Leisure."
+text = "Objective: keep the historic core livable while responding to the hospital crisis."
 
 [node name="MetricPanel" type="VBoxContainer" parent="MainLayout/LeftColumn"]
 layout_mode = 2
@@ -75,10 +76,9 @@ layout_mode = 2
 autowrap_mode = 2
 text = "A living historic district under increasing visitor pressure."
 
-[node name="DistrictPlaceholder" type="ColorRect" parent="MainLayout/MiddleColumn"]
-custom_minimum_size = Vector2(0, 220)
+[node name="MapView" parent="MainLayout/MiddleColumn" instance=ExtResource("8")]
 layout_mode = 2
-color = Color(0.12, 0.18, 0.22, 1)
+size_flags_vertical = 3
 
 [node name="DecisionPanel" type="VBoxContainer" parent="MainLayout/MiddleColumn"]
 layout_mode = 2
@@ -91,15 +91,15 @@ text = "Choose an intervention"
 [node name="Tradeoff" type="Label" parent="MainLayout/MiddleColumn/DecisionPanel"]
 layout_mode = 2
 autowrap_mode = 2
-text = ""
+text = "Advance to month 1 to reveal the crisis."
 
-[node name="Renegotiate" type="Button" parent="MainLayout/MiddleColumn/DecisionPanel"]
+[node name="ProtectWorkers" type="Button" parent="MainLayout/MiddleColumn/DecisionPanel"]
 layout_mode = 2
-text = "Renegotiate Aurora Leisure"
+text = "Protect essential workers"
 
-[node name="SocialHousing" type="Button" parent="MainLayout/MiddleColumn/DecisionPanel"]
+[node name="DeferResponse" type="Button" parent="MainLayout/MiddleColumn/DecisionPanel"]
 layout_mode = 2
-text = "Start social housing"
+text = "Defer response"
 
 [node name="Confirm" type="Button" parent="MainLayout/MiddleColumn/DecisionPanel"]
 layout_mode = 2

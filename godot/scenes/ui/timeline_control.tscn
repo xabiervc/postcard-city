@@ -16,5 +16,6 @@ text = "Month 0"
 layout_mode = 2
 text = "Advance month"
 
-[node name="Speed" type="OptionButton" parent="Content"]
+[node name="Pause" type="Button" parent="Content"]
 layout_mode = 2
+text = "Pause"
