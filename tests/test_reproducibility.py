@@ -2,16 +2,16 @@ import json
 from pathlib import Path
 
 from postcard_city.scenario import load_scenario
-from postcard_city.simulation import Simulation
+from postcard_city.simulation import simulate_year
 
 SCENARIO_PATH = Path(__file__).parents[1] / "data" / "scenarios" / "the-overheated-destination.json"
 
 
 def run_replay(seed):
-    simulation = Simulation(load_scenario(SCENARIO_PATH), seed=seed)
+    scenario = load_scenario(SCENARIO_PATH)
     outputs = []
     for _ in range(3):
-        result = simulation.run_year()
+        result = simulate_year(scenario, seed=seed)
         outputs.append(result)
     return json.loads(json.dumps(outputs, sort_keys=True, default=str))
 
